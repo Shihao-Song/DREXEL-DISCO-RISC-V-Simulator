@@ -1,0 +1,6 @@
+This is the simulator used for ECEC-355 Computer Architecture.
+
+Course Projects:
+(1) Single-cycle RISC-V Simulation with Study on Multi-core System
+(2) Multi Execution Stage RISC-V Pipeline Simulation and Data Forwarding
+(3) Advanced Cache Simulation
