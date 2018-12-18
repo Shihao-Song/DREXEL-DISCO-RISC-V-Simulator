@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include <bitset>
 
 #include "Instruction_Memory.h"
 #include "Instruction.h"
@@ -49,11 +50,13 @@ private:
 	map<string, int>reg_name_to_index;	
 
 	/*
-		Map (2), Operation to opcode and funct3
+		Map (2), Operation to opcode, funct3 and funct7
 	*/
 	map<string, int>opr_to_opcode;
 
 	map<string, int>opr_to_funct3;
+	
+	map<string, int>opr_to_funct7;
 
 	/*
 		Register names

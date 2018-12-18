@@ -1,8 +1,10 @@
 This is the simulator used for ECEC-355 Computer Architecture.
 
-Instructor: Dr. Anup Das
+Instructor: Dr. Anup Das (Drexel University, ECE Department)
+
+Project Developer: Shihao Song (Drexel University, ECE Department)
 
 Course Projects:
-(1) Single-cycle RISC-V Simulation with Study on Multi-core System
-(2) Multi Execution Stage RISC-V Pipeline Simulation and Data Forwarding
-(3) Advanced Cache Simulation
+(1) Single-cycle RISC-V Simulation with Exploration to Multi-core System (2 weeks)
+(2) Multi-Execution Stage RISC-V Pipeline Simulation with Data Forwarding (3 weeks)
+(3) Advanced Cache Simulation with Introduction to Cache Coherence Protocol (3 weeks)

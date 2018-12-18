@@ -10,7 +10,7 @@ class Instruction
 public:
 	long addr; // Address of the instruction
 
-	unsigned int instr; // The instruction read from instruction memory
+	unsigned int instruction = 0; // The instruction read from instruction memory
 
 	int begin_exe; // Clock which it starts to execute
 
