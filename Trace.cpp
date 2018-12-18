@@ -15,7 +15,8 @@ Trace::Trace(Instruction_Memory *instr_mem, const string trace_fname) :
 	*/
 	for (int i = 0; i < NUM_OF_REGS; i++)
 	{
-		reg_name_to_index.insert(pair<string, int>(reg_name_sym[i], i));
+		// reg_name_to_index.insert(pair<string, int>(reg_name_sym[i], i));
+		reg_name_to_index.insert(pair<string, int>(regs[i], i));
 	}
 		
 	/*
@@ -70,6 +71,11 @@ Trace::Trace(Instruction_Memory *instr_mem, const string trace_fname) :
 	opr_to_opcode.insert(pair<string, int>("add", 51));	
 	opr_to_funct3.insert(pair<string, int>("add", 0));
 	opr_to_funct7.insert(pair<string, int>("add", 0));
+	
+	// sub
+	opr_to_opcode.insert(pair<string, int>("add", 51));	
+	opr_to_funct3.insert(pair<string, int>("add", 0));
+	opr_to_funct7.insert(pair<string, int>("add", 32));
 	
 	// sll
 	opr_to_opcode.insert(pair<string, int>("sll", 51));	
@@ -128,14 +134,15 @@ void Trace::write_into_instr_mem()
 		{
 			Instruction instr;
 
-			// (1) Extrac operation first
+			// (1) Extract operation first
 			size_t pos = line.find_first_not_of(' ', 0);
 			size_t end = line.find_first_of(' ', 0);
 
 			string opr = line.substr(pos, end - pos);
 
 			// (2) Determine instruction type
-			if (opr == "add" || 
+			if (opr == "add" ||
+				opr == "sub" ||	
 				opr == "sll" || 
 				opr == "srl" || 
 				opr == "xor" || 
@@ -187,20 +194,145 @@ void Trace::write_into_instr_mem()
 
 				cout << test << endl;
 			}
-			else if ( opr == "ld" || 
-					opr == "addi" ||
+			else if ( opr == "ld" )
+			{
+				// Load instruction
+				int opcode = opr_to_opcode.find(opr)->second;
+				instr.instruction |= opcode;
+
+				// Extract rd
+				pos = line.find_first_of(' ', 0) + 1;
+				end = line.find_first_of(',', 0);
+
+				string rd = line.substr(pos, end - pos);
+				
+				unsigned int rd_index = reg_name_to_index.find(rd)->second;
+				instr.instruction |= (rd_index << 7);
+
+				// Funct3
+				unsigned int funct3 = opr_to_funct3.find(opr)->second;
+				instr.instruction |= (funct3 << (7 + 5));
+
+				// Extract immediate
+				pos = line.find_first_of(' ', pos + 1) + 1;
+				end = line.find_first_of('(', 0);
+				
+				string imme = line.substr(pos, end - pos);
+
+				int immediate = stoi(imme, &pos, 0);
+
+				// Extract rs1
+				pos = line.find_first_of('(', 0) + 1;
+				end = line.find_first_of(')', 0);
+
+				string rs_1 = line.substr(pos, end - pos);
+				unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
+				
+				instr.instruction |= (rs_1_index << (7 + 5 + 3));
+
+				instr.instruction |= (immediate << (7 + 5 + 3 + 5));
+				
+				bitset<32> test(instr.instruction);
+				cout << test << endl;
+
+			}
+			else if (opr == "addi" ||
 				    	opr == "slli" ||  
 					opr == "xori" || 
 					opr == "srli" || 
 					opr == "ori" || 
 					opr == "andi")
 			{
-				// I-type instruction
+				// I-type instruction excluding ld
+				int opcode = opr_to_opcode.find(opr)->second;
+				instr.instruction |= opcode;
 
+				// Extract rd
+				pos = line.find_first_of(' ', 0) + 1;
+				end = line.find_first_of(',', 0);
+
+				string rd = line.substr(pos, end - pos);
+				
+				unsigned int rd_index = reg_name_to_index.find(rd)->second;
+				instr.instruction |= (rd_index << 7);
+
+				// Funct3
+				unsigned int funct3 = opr_to_funct3.find(opr)->second;
+				instr.instruction |= (funct3 << (7 + 5));
+
+				// Extract rs1
+				pos = line.find_first_of(' ', pos + 1) + 1;
+				end = line.find_first_of(',', end + 1);
+
+				string rs_1 = line.substr(pos, end - pos);
+
+				unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
+				
+				instr.instruction |= (rs_1_index << (7 + 5 + 3));
+
+				// Extract immediate
+				pos = line.find_first_of(' ', pos + 1) + 1;
+
+				string imme = line.substr(pos, line.size() - pos);
+				
+				int immediate = stoi(imme, &pos, 0);
+				
+				instr.instruction |= (immediate << (7 + 5 + 3 + 5));
+			
+				bitset<32> test(instr.instruction);
+
+				cout << test << endl;
 			}
 			else if (opr == "sd")
 			{
-				// S-type instruction
+				// S-type instruction (currently only sd supported)
+				int opcode = opr_to_opcode.find(opr)->second;
+
+				// Extract rs_2
+				pos = line.find_first_of(' ', 0) + 1;
+				end = line.find_first_of(',', 0);
+
+				string rs_2 = line.substr(pos, end - pos);
+				
+				unsigned int rs_2_index = reg_name_to_index.find(rs_2)->second;
+
+				// Funct3
+				unsigned int funct3 = opr_to_funct3.find(opr)->second;
+
+				// Extract immediate
+				pos = line.find_first_of(' ', pos + 1) + 1;
+				end = line.find_first_of('(', 0);
+				
+				string imme = line.substr(pos, end - pos);
+
+				int immediate = stoi(imme, &pos, 0);
+
+				// Extract rs1
+				pos = line.find_first_of('(', 0) + 1;
+				end = line.find_first_of(')', 0);
+
+				string rs_1 = line.substr(pos, end - pos);
+				unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
+			
+				// Format instruction
+				instr.instruction |= opcode;
+				
+				int mask = 31;
+				int first_five_bits = mask & immediate;
+				instr.instruction |= (first_five_bits << 7);
+
+				instr.instruction |= (funct3 << (7 + 5));
+
+				instr.instruction |= (rs_1_index << (7 + 5 + 3));
+				
+				instr.instruction |= (rs_2_index << (7 + 5 + 3 + 5));
+
+				int last_seven_bits = (immediate >> 5);
+
+				instr.instruction |= (last_seven_bits << (7 + 5 + 3 + 5 + 5));
+
+				bitset<32> test(instr.instruction);
+				cout << test << endl;
 			}
 			else if (opr == "beq" || 
 					opr == "bne" ||  

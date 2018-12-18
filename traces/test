@@ -1,4 +1,0 @@
-ld s1, 240(a0)
-add s1, s5, s1
-addi s1, s1, 1
-sd s1, 240(a0)
