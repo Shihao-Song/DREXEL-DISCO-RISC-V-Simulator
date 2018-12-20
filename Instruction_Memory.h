@@ -4,12 +4,12 @@
 #include <vector>
 #include <map>
 
-#include "Trace.h"
+#include "Assembler.h"
 #include "Instruction.h"
 
 using namespace std;
 
-class Trace;
+class Assembler;
 
 class Instruction_Memory
 {

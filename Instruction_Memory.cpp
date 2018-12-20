@@ -2,9 +2,9 @@
 
 Instruction_Memory::Instruction_Memory(const string trace_fname)
 {
-	Trace *trace = new Trace(this, trace_fname);
+	Assembler *assm = new Assembler(this, trace_fname);
 
-	trace->write_into_instr_mem();
+	assm->write_into_instr_mem();
 
-	free(trace);
+	free(assm);
 }

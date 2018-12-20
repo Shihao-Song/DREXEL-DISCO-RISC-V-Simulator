@@ -1,6 +1,6 @@
-#include "Trace.h"
+#include "Assembler.h"
 
-Trace::Trace(Instruction_Memory *instr_mem, const string trace_fname) : 
+Assembler::Assembler(Instruction_Memory *instr_mem, const string trace_fname) : 
 	instr_mem (instr_mem),
 	file (trace_fname)
 {
@@ -119,10 +119,15 @@ Trace::Trace(Instruction_Memory *instr_mem, const string trace_fname) :
 	
 	// bge
 	opr_to_opcode.insert(pair<string, int>("bge", 99));	
-	opr_to_funct3.insert(pair<string, int>("bge", 3));	
+	opr_to_funct3.insert(pair<string, int>("bge", 3));
+
+	/*
+		UJ-type instruction
+	*/
+		
 }
 
-void Trace::write_into_instr_mem()
+void Assembler::write_into_instr_mem()
 {
 	// Iterator all the lines
 	while (!file.eof())
@@ -276,7 +281,6 @@ void Trace::write_into_instr_mem()
 				string imme = line.substr(pos, line.size() - pos);
 				
 				int immediate = stoi(imme, &pos, 0);
-				
 				instr.instruction |= (immediate << (7 + 5 + 3 + 5));
 			
 				bitset<32> test(instr.instruction);
@@ -328,7 +332,6 @@ void Trace::write_into_instr_mem()
 				instr.instruction |= (rs_2_index << (7 + 5 + 3 + 5));
 
 				int last_seven_bits = (immediate >> 5);
-
 				instr.instruction |= (last_seven_bits << (7 + 5 + 3 + 5 + 5));
 
 				bitset<32> test(instr.instruction);
@@ -340,6 +343,66 @@ void Trace::write_into_instr_mem()
 					opr == "bge")
 			{
 				// SB-type instruction
+				int opcode = opr_to_opcode.find(opr)->second;
+
+				// Extract rs_1
+				pos = line.find_first_of(' ', 0) + 1;
+				end = line.find_first_of(',', 0);
+
+				string rs_1 = line.substr(pos, end - pos);
+				
+				unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
+
+				// Funct3
+				unsigned int funct3 = opr_to_funct3.find(opr)->second;
+
+				// Extract rs_2
+				pos = line.find_first_of(' ', pos + 1) + 1;
+				end = line.find_first_of(',', end + 1);
+
+				string rs_2 = line.substr(pos, end - pos);
+
+				unsigned int rs_2_index = reg_name_to_index.find(rs_2)->second;
+
+				// Extract immediate
+				pos = line.find_first_of(' ', pos + 1) + 1;
+
+				string imme = line.substr(pos, line.size() - pos);
+				
+				int immediate = stoi(imme, &pos, 0);
+		
+				// Format instruction		
+				immediate = immediate >> 1;
+				int bit_1_to_4 = immediate & 15;
+
+				immediate = immediate >> 4;
+				int bit_5_to_10 = immediate & 63;
+
+				immediate = immediate >> 6;
+				int bit_11 = immediate & 1;
+
+				immediate = immediate >> 1;
+				int bit_12 = immediate & 1;
+				
+				instr.instruction |= opcode;
+				
+				instr.instruction |= bit_11 << 7;
+
+				instr.instruction |= bit_1_to_4 << (7 + 1);
+
+				instr.instruction |= funct3 << (7 + 1 + 4);
+
+				instr.instruction |= rs_1_index << (7 + 1 + 4 + 3);
+				
+				instr.instruction |= rs_2_index << (7 + 1 + 4 + 3 + 5);
+
+				instr.instruction |= bit_5_to_10 << (7 + 1 + 4 + 3 + 5 + 5);
+
+				instr.instruction |= bit_12 << (7 + 1 + 4 + 3 + 5 + 5 + 6);
+
+				bitset<32> test(instr.instruction);
+
+				cout << test << endl;
 			}
 		}
 	}

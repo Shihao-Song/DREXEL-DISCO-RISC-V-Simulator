@@ -1,5 +1,5 @@
-#ifndef __TRACE_H__
-#define __TRACE_H__
+#ifndef __ASSEMBLER_H__
+#define __ASSEMBLER_H__
 
 #include <iostream>
 #include <string>
@@ -25,12 +25,12 @@ class Instruction_Memory;
 	machine codes then stores into instruction memory.
 */
 
-class Trace
+class Assembler
 {
 public:
-	Trace(Instruction_Memory *instr_mem, const string trace_fname);
+	Assembler(Instruction_Memory *instr_mem, const string trace_fname);
 
-	~Trace()
+	~Assembler()
 	{
 		// Close trace file
 		file.close(); 
