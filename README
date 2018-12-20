@@ -1,4 +1,6 @@
-This is the simulator used for ECEC-355 Computer Architecture.
+This is a simplified full system RISC-V simulator used for ECEC-355 Computer Architecture.
+
+Designed by: Drexel DISCO Lab
 
 Instructor: Dr. Anup Das (Drexel University, ECE Department)
 
