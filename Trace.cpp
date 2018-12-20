@@ -73,9 +73,9 @@ Trace::Trace(Instruction_Memory *instr_mem, const string trace_fname) :
 	opr_to_funct7.insert(pair<string, int>("add", 0));
 	
 	// sub
-	opr_to_opcode.insert(pair<string, int>("add", 51));	
-	opr_to_funct3.insert(pair<string, int>("add", 0));
-	opr_to_funct7.insert(pair<string, int>("add", 32));
+	opr_to_opcode.insert(pair<string, int>("sub", 51));	
+	opr_to_funct3.insert(pair<string, int>("sub", 0));
+	opr_to_funct7.insert(pair<string, int>("sub", 32));
 	
 	// sll
 	opr_to_opcode.insert(pair<string, int>("sll", 51));	
