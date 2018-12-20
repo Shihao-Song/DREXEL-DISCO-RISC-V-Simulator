@@ -123,8 +123,8 @@ Assembler::Assembler(Instruction_Memory *instr_mem, const string trace_fname) :
 
 	/*
 		UJ-type instruction
-	*/
-		
+	*/	
+	opr_to_opcode.insert(pair<string, int>("jal", 111));	
 }
 
 void Assembler::write_into_instr_mem()
@@ -404,6 +404,54 @@ void Assembler::write_into_instr_mem()
 
 				cout << test << endl;
 			}
+			else if (opr == "jal")
+			{
+				// UI-type instruction
+				int opcode = opr_to_opcode.find(opr)->second;
+
+                                // Extract rd
+                                pos = line.find_first_of(' ', 0) + 1;
+                                end = line.find_first_of(',', 0);
+
+                                string rd = line.substr(pos, end - pos);
+
+                                unsigned int rd_index = reg_name_to_index.find(rd)->second;					
+				// Extract immediate
+				pos = line.find_first_of(' ', pos + 1) + 1;
+
+				string imme = line.substr(pos, line.size() - pos);
+				
+				int immediate = stoi(imme, &pos, 0);
+		
+				// Format instruction
+				immediate = immediate >> 1;
+				int bit_1_to_10 = immediate & 1023;
+
+				immediate = immediate >> 10;
+				int bit_11 = immediate & 1;
+
+				immediate = immediate >> 1;
+				int bit_12_to_19 = immediate & 255;
+
+				immediate = immediate >> 8;
+				int bit_20 = immediate & 1;
+
+				instr.instruction |= opcode;
+
+				instr.instruction |= (rd_index << 7);
+
+				instr.instruction |= (bit_12_to_19 << (7 + 5));
+
+				instr.instruction |= (bit_11 << (7 + 5 + 8));
+
+				instr.instruction |= (bit_1_to_10 << (7 + 5 + 8 + 1));
+
+				instr.instruction |= (bit_20 << (7 + 5 + 8 + 1 + 10));
+				
+				bitset<32> test(instr.instruction);
+
+				cout << test << endl;
+			}	
 		}
 	}
 }
