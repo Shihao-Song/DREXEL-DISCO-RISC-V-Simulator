@@ -50,7 +50,7 @@ void Config::parse(const string &fname)
 	}
 	else if(tokens[0] == "frequency")
         {
-        	frequency = atoi(tokens[1].c_str());
+        	frequency = atof(tokens[1].c_str());
 	}
     }
 

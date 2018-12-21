@@ -13,7 +13,7 @@ class Config
 {
 private:
 	int num_cores = 1; // Default: 1 core per socket
-	int frequency = 1; // Default: 1 GHz
+	double frequency = 1.0; // Default: 1 GHz
 
 public:
 	Config(const string &fname);
@@ -21,7 +21,7 @@ public:
 	void parse(const string &fname);
 
 	int get_num_cores() const { return num_cores; }
-	int get_freq() const { return frequency; }
+	double get_freq() const { return frequency; }
 };
 
 #endif

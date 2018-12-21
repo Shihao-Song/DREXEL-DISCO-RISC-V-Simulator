@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <bitset>
 
+#include "Config.h"
 #include "Instruction_Memory.h"
 #include "Instruction.h"
 
@@ -17,16 +17,19 @@ int main(int argc, const char *argv[])
 		return 0;
 	}	
 
-	Instruction_Memory instr_mem(argv[1]);
-	
+	Config config(argv[1]);
+
+	cout << config.get_num_cores() << endl;
+	cout << config.get_freq() << endl;
+
 	/*
 		Output File
 	*/
-	ofstream out(argv[2]);
+//	ofstream out(argv[2]);
 
 	/*
 		Free Resource
 	*/
-	out.close();
+//	out.close();
 }
 
