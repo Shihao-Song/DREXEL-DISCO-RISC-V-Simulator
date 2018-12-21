@@ -132,6 +132,8 @@ void Assembler::write_into_instr_mem()
 	// Iterator all the lines
 	while (!file.eof())
 	{
+		static int addr = 0;
+
 		string line;
 		getline(file, line);
 		
@@ -194,10 +196,6 @@ void Assembler::write_into_instr_mem()
 				unsigned int funct7 = opr_to_funct7.find(opr)->second;
 				
 				instr.instruction |= (funct7 << (7 + 5 + 3 + 5 + 5));
-			
-				bitset<32> test(instr.instruction);
-
-				cout << test << endl;
 			}
 			else if ( opr == "ld" )
 			{
@@ -236,10 +234,6 @@ void Assembler::write_into_instr_mem()
 				instr.instruction |= (rs_1_index << (7 + 5 + 3));
 
 				instr.instruction |= (immediate << (7 + 5 + 3 + 5));
-				
-				bitset<32> test(instr.instruction);
-				cout << test << endl;
-
 			}
 			else if (opr == "addi" ||
 				    	opr == "slli" ||  
@@ -282,10 +276,6 @@ void Assembler::write_into_instr_mem()
 				
 				int immediate = stoi(imme, &pos, 0);
 				instr.instruction |= (immediate << (7 + 5 + 3 + 5));
-			
-				bitset<32> test(instr.instruction);
-
-				cout << test << endl;
 			}
 			else if (opr == "sd")
 			{
@@ -333,9 +323,6 @@ void Assembler::write_into_instr_mem()
 
 				int last_seven_bits = (immediate >> 5);
 				instr.instruction |= (last_seven_bits << (7 + 5 + 3 + 5 + 5));
-
-				bitset<32> test(instr.instruction);
-				cout << test << endl;
 			}
 			else if (opr == "beq" || 
 					opr == "bne" ||  
@@ -399,10 +386,6 @@ void Assembler::write_into_instr_mem()
 				instr.instruction |= bit_5_to_10 << (7 + 1 + 4 + 3 + 5 + 5);
 
 				instr.instruction |= bit_12 << (7 + 1 + 4 + 3 + 5 + 5 + 6);
-
-				bitset<32> test(instr.instruction);
-
-				cout << test << endl;
 			}
 			else if (opr == "jal")
 			{
@@ -447,11 +430,13 @@ void Assembler::write_into_instr_mem()
 				instr.instruction |= (bit_1_to_10 << (7 + 5 + 8 + 1));
 
 				instr.instruction |= (bit_20 << (7 + 5 + 8 + 1 + 10));
-				
-				bitset<32> test(instr.instruction);
-
-				cout << test << endl;
 			}	
+		
+			instr.addr = addr;
+
+			(instr_mem->instructions).insert(pair<int, Instruction>(addr, instr));	
+
+			addr += 4;	
 		}
 	}
 }

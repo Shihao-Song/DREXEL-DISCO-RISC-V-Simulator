@@ -7,4 +7,6 @@ Instruction_Memory::Instruction_Memory(const string trace_fname)
 	assm->write_into_instr_mem();
 
 	free(assm);
+
+	printInstr();
 }

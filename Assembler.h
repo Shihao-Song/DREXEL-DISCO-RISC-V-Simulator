@@ -5,7 +5,6 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include <bitset>
 
 #include "Instruction_Memory.h"
 #include "Instruction.h"
