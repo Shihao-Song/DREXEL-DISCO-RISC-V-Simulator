@@ -1,12 +1,15 @@
 #include "Instruction_Memory.h"
 
-Instruction_Memory::Instruction_Memory(const string trace_fname)
+Instruction_Memory::Instruction_Memory(const string fname)
 {
-	Assembler *assm = new Assembler(this, trace_fname);
+	Assembler *assm = new Assembler(this, fname);
 
 	assm->write_into_instr_mem();
 
 	free(assm);
+}
 
-	printInstr();
+Instruction& Instruction_Memory::get_instruction(int addr)
+{
+	return instructions.find(addr)->second;
 }

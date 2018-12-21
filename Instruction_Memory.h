@@ -15,7 +15,9 @@ class Assembler;
 class Instruction_Memory
 {
 public:
-	Instruction_Memory(const string trace_fname);
+	Instruction_Memory(const string fname);
+
+	Instruction& get_instruction(int addr);
 
 	friend class Assembler;
 private:
