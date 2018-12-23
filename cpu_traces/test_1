@@ -1,0 +1,4 @@
+ld x9, 240(x10)
+add x9, x21, x9
+addi x9, x9, 1
+sd x9, 240(x10)
