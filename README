@@ -1,11 +1,8 @@
-A simple full system RISC-V simulator used for ECEC-355 Computer Architecture.
+A simple full system RISC-V simulator designed by Drexel DISCO Lab
 
-Designed by: Drexel DISCO Lab
+P.I: Dr. Anup Das (http://www.anupdas.com/)
 
-Instructor: Dr. Anup Das (Drexel University, ECE Department)
-
-Course Projects:
-(0) C++ Programming Overview (1 week)
-(1) Single-cycle Simulation with Exploration to Multi-core System (2 weeks)
-(2) Multi-cycle and Pipeline Simulation with Data Forwarding (3 weeks)
-(3) Advanced Cache Simulation with Introduction to Cache Coherence Protocol (3 weeks)
+Course Projects Based on DREXEL-DISCO-RISC-V-Simulator:
+(1) Single-cycle Simulation with Exploration to Multi-core System
+(2) Multi-cycle and Pipeline Simulation with Data Forwarding
+(3) Advanced Cache Simulation with Introduction to Cache Coherence Protocol
