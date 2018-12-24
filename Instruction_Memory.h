@@ -17,16 +17,25 @@ class Instruction_Memory
 public:
 	Instruction_Memory(const string fname);
 
-	Instruction& get_instruction(int addr);
+	Instruction& get_instruction(long addr);
+
+	// Return the address of the last instruction
+	long last_addr() 
+	{ 
+		map<long, Instruction>::iterator ite = instructions.end();
+		ite--;
+
+		return ite->second.addr;
+	}
 
 	friend class Assembler;
 private:
-	map<int, Instruction> instructions;
+	map<long, Instruction> instructions;
 
 	// For debug only
 	void printInstr()
 	{
-		for (map<int, Instruction>::iterator ite = instructions.begin();
+		for (map<long, Instruction>::iterator ite = instructions.begin();
 				ite != instructions.end(); ite++)	
 		{
 			cout << ite->first << " => " << ite->second.addr;

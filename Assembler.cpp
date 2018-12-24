@@ -132,7 +132,7 @@ void Assembler::write_into_instr_mem()
 	// Iterator all the lines
 	while (!file.eof())
 	{
-		static int addr = 0;
+		static long addr = 0;
 
 		string line;
 		getline(file, line);
@@ -140,6 +140,7 @@ void Assembler::write_into_instr_mem()
 		if (line.size() != 0)
 		{
 			Instruction instr;
+			instr.raw_instr = line;
 
 			// (1) Extract operation first
 			size_t pos = line.find_first_not_of(' ', 0);
@@ -434,7 +435,7 @@ void Assembler::write_into_instr_mem()
 		
 			instr.addr = addr;
 
-			(instr_mem->instructions).insert(pair<int, Instruction>(addr, instr));	
+			(instr_mem->instructions).insert(pair<long, Instruction>(addr, instr));	
 
 			addr += 4;	
 		}

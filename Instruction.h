@@ -2,6 +2,7 @@
 #define __INSTRUCTION_H__
 
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -10,11 +11,13 @@ class Instruction
 public:
 	long addr; // Address of the instruction
 
-	unsigned int instruction = 0; // The instruction read from instruction memory
+	string raw_instr; // Raw instruction from input file
 
-	int begin_exe; // Clock which it starts to execute
+	unsigned int instruction = 0; // Instruction read from instruction memory
 
-	int end_exe; // Clock which it ends execution
+	unsigned long long int begin_exe; // Clock which it starts to execute
+
+	unsigned long long int end_exe; // Clock which it ends execution
 
 	/*
 		Constructor

@@ -52,6 +52,10 @@ void Config::parse(const string &fname)
         {
         	frequency = atof(tokens[1].c_str());
 	}
+	else if(tokens[0] == "mc_mode")
+        {
+        	mc_mode = atof(tokens[1].c_str());
+	}
     }
 
     file.close();

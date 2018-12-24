@@ -1,11 +1,14 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "Config.h"
-#include "Instruction_Memory.h"
-#include "Instruction.h"
+#include "Core.h"
+#include "Socket.h"
 
 using namespace std;
+
+void run_simulation(Socket *socket);
 
 int main(int argc, const char *argv[])
 {	
@@ -17,19 +20,61 @@ int main(int argc, const char *argv[])
 		return 0;
 	}	
 
+	/*
+		Preparation	
+	*/
+	// Parse configuration file
 	Config config(argv[1]);
+	
+	// Output file
+	ofstream out(argv[2]);
 
-	cout << config.get_num_cores() << endl;
-	cout << config.get_freq() << endl;
+	// Initialize Cores
+	vector<Core *> cores;
+
+	for (int i = 0; i < config.get_num_cores(); i++)
+	{
+		Core *core = new Core(argv[(3 + i)], &out);
+		core->id = i;
+
+		cores.push_back(core);
+	}
+
+	// Initialize Socket
+	Socket *socket = new Socket(config, cores);
 
 	/*
-		Output File
+		Run Simulation
 	*/
-//	ofstream out(argv[2]);
+	if (config.get_mc_mode() != 0)
+	{
+		run_simulation(socket);
+	}
+	else
+	{
+		// TODO, print machine codes here	
+	}
 
 	/*
 		Free Resource
 	*/
-//	out.close();
+	out.close();
+
+	for (int i = 0; i < config.get_num_cores(); i++)
+	{
+		free(cores[i]);
+	}
+
+	free(socket);
 }
 
+void run_simulation(Socket *socket)
+{
+	while (true)
+	{
+		if (socket->tick() == false)
+		{
+			break;
+		}
+	}	
+}

@@ -9,7 +9,7 @@ Instruction_Memory::Instruction_Memory(const string fname)
 	free(assm);
 }
 
-Instruction& Instruction_Memory::get_instruction(int addr)
+Instruction& Instruction_Memory::get_instruction(long addr)
 {
 	return instructions.find(addr)->second;
 }
