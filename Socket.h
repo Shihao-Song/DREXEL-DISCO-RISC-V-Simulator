@@ -17,6 +17,13 @@ public:
 
 	bool tick(); // FALSE means all the instructions are exhausted
 
+	void printInstrs()
+	{
+		for (int i = 0; i < cores.size(); i++)
+		{
+			cores[i]->printInstrs();
+		}
+	}
 private:
 	vector<Core*> cores;
 

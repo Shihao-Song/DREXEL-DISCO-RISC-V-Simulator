@@ -20,6 +20,13 @@ public:
 	bool tick(); // FALSE means all the instructions are exhausted
 
 	int id; // Each core has its own ID
+
+	void printInstrs()
+	{
+		cout << "Core " << id << " : " << endl;
+
+		instr_mem->printInstr();
+	}
 private:
 
 	ofstream *out; // Output file

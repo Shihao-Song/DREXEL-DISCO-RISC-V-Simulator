@@ -29,6 +29,7 @@ public:
 	}
 
 	friend class Assembler;
+	friend class Core;
 private:
 	map<long, Instruction> instructions;
 
@@ -38,7 +39,7 @@ private:
 		for (map<long, Instruction>::iterator ite = instructions.begin();
 				ite != instructions.end(); ite++)	
 		{
-			cout << ite->first << " => " << ite->second.addr;
+			cout << "   " << ite->first << " : " << ite->second.raw_instr;
 			bitset<32> ins(ite->second.instruction);
 			cout << " => " << ins << endl;
 		}

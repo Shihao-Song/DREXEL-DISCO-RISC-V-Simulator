@@ -46,13 +46,13 @@ int main(int argc, const char *argv[])
 	/*
 		Run Simulation
 	*/
-	if (config.get_mc_mode() != 0)
+	if (config.get_mc_mode() != 1)
 	{
 		run_simulation(socket);
 	}
 	else
 	{
-		// TODO, print machine codes here	
+		socket->printInstrs();
 	}
 
 	/*
