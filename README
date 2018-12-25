@@ -4,5 +4,5 @@ P.I: Dr. Anup Das (http://www.anupdas.com/)
 
 Course Projects Based on DREXEL-DISCO-RISC-V-Simulator:
 (1) Single-cycle Simulation with Exploration to Multi-core System
-(2) Multi-cycle and Pipeline Simulation with Data Forwarding
+(2) Multi-execution Stage Pipeline Simulation with Data Forwarding
 (3) Advanced Cache Simulation with Introduction to Cache Coherence Protocol

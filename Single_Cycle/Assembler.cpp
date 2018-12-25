@@ -129,11 +129,11 @@ Assembler::Assembler(Instruction_Memory *instr_mem, const string trace_fname) :
 
 void Assembler::write_into_instr_mem()
 {
+	long addr = 0;
+	
 	// Iterator all the lines
 	while (!file.eof())
 	{
-		static long addr = 0;
-
 		string line;
 		getline(file, line);
 		

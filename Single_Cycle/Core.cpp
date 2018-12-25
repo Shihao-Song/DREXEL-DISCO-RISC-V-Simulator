@@ -10,16 +10,21 @@ Core::Core(const string &fname, ofstream *out) : out(out),
 
 bool Core::tick()
 {
+	/*
+		Step One: Serving pending instructions
+	*/
+	
+
+	/*
+		Step Two: Serve new instruction
+	*/
 	// Get Instruction
 	Instruction &instruction = instr_mem->get_instruction(PC);
-
-	bitset<32> test(instruction.instruction);
-
-	cout << test << endl;
 
 	// Increment PC
 	PC += 4;
 
+	// We are reaching the last instruction
 	if (PC > instr_mem->last_addr())
 	{
 		return false;
