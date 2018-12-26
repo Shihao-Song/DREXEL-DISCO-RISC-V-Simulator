@@ -1,8 +1,18 @@
 A simple but cycle-accurate RISC-V full system simulator designed by Drexel DISCO Lab
 
-P.I: Dr. Anup Das (http://www.anupdas.com/)
+P.I.: Dr. Anup Das (http://www.anupdas.com/)
 
 Course Projects Based on DREXEL-DISCO-RISC-V-Simulator:
 (1) Single-cycle Simulation with Exploration to Multi-core System
 (2) Multi-execution Stage Pipeline Simulation with Data Forwarding
 (3) Advanced Cache Simulation with Introduction to Cache Coherence Protocol
+
+To compile:
+bash compile.bash single-cycle OR
+bash compile.bash pipeline
+
+To run (example):
+./RVSim configs/RISC_V.cfg out/test cpu_traces/test
+
+
+
