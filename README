@@ -14,5 +14,4 @@ bash compile.bash pipeline
 To run (example):
 ./RVSim configs/RISC_V.cfg out/test cpu_traces/test
 
-
-
+For more information, please review course_projects section
