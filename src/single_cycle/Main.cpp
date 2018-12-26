@@ -55,6 +55,8 @@ int main(int argc, const char *argv[])
 		socket->printInstrs();
 	}
 
+	cout << "Execution time: " << socket->get_execution_time() << " ns." << endl;
+
 	/*
 		Free Resource
 	*/
