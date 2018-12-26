@@ -46,6 +46,10 @@ private:
 	*/
 	// For demonstration only, you should use your linked list data structure.
 	list<Instruction> pending_queue;
+
+	/*
+		Group Three: State Machine
+	*/
 };
 
 #endif
