@@ -1,6 +1,6 @@
 A simple but cycle-accurate RISC-V full system simulator designed by Drexel DISCO Lab
 
-P.I.: Dr. Anup Das (http://www.anupdas.com/)
+P.I.s: Dr. Anup Das, Dr. Nagarajan Kandasamy
 
 Course Projects Based on DREXEL-DISCO-RISC-V-Simulator:
 (1) Single-cycle Simulation with Exploration to Multi-core System
