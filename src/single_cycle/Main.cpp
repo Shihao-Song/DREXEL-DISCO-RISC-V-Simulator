@@ -28,8 +28,7 @@ int main(int argc, const char *argv[])
 	
 	// Output file
 	ofstream out(argv[2]);
-	out << "Instruction,Core ID,Begin Execution,End Execution" << endl;
-
+		
 	// Initialize Cores
 	vector<Core *> cores;
 

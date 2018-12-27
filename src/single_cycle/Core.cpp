@@ -67,9 +67,9 @@ void Core::serve_pending_instrs()
 
 void Core::printStats(list<Instruction>::iterator &ite)
 {
-	*out << "<" << ite->raw_instr << ">,";
-	*out << id << ",";
-	*out << ite->begin_exe << ",";
-	*out << ite->end_exe << endl;
+	*out << ite->raw_instr << " => ";
+	*out << "Core ID: " << id << "; ";
+	*out << "Begin Exe: " << ite->begin_exe << "; ";
+	*out << "End Exe: " << ite->end_exe << endl;
 }
 

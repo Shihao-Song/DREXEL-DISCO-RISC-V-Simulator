@@ -1,6 +1,5 @@
-Instruction,Core ID,Begin Execution,End Execution
-<slli x10, x22, 3>,0,0,1
-<add x10, x10, x25>,0,1,2
-<ld x9, 0(x10)>,0,2,3
-<bne x9, x24, 12>,0,3,4
-<addi x22, x22, 1>,0,4,5
+slli x10, x22, 3 => Core ID: 0; Begin Exe: 0; End Exe: 1
+add x10, x10, x25 => Core ID: 0; Begin Exe: 1; End Exe: 2
+ld x9, 0(x10) => Core ID: 0; Begin Exe: 2; End Exe: 3
+bne x9, x24, 12 => Core ID: 0; Begin Exe: 3; End Exe: 4
+addi x22, x22, 1 => Core ID: 0; Begin Exe: 4; End Exe: 5
