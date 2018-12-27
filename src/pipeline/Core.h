@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include <bitset>
 
 #include "Instruction_Memory.h"
 #include "Instruction.h"
@@ -27,6 +26,7 @@ public:
 
 		instr_mem->printInstr();
 	}
+
 private:
 
 	ofstream *out; // Output file
@@ -47,9 +47,9 @@ private:
 	// For demonstration only, you should use your linked list data structure.
 	list<Instruction> pending_queue;
 
-	/*
-		Group Three: State Machine
-	*/
+	void serve_pending_instrs();
+
+	void printStats(list<Instruction>::iterator &ite);
 };
 
 #endif

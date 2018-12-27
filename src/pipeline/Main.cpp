@@ -28,7 +28,7 @@ int main(int argc, const char *argv[])
 	
 	// Output file
 	ofstream out(argv[2]);
-
+		
 	// Initialize Cores
 	vector<Core *> cores;
 
@@ -54,6 +54,8 @@ int main(int argc, const char *argv[])
 	{
 		socket->printInstrs();
 	}
+
+	cout << "Execution time: " << socket->get_execution_time() << " ns." << endl;
 
 	/*
 		Free Resource
