@@ -25,7 +25,6 @@ bool Socket::tick()
 	{
 		if (ref_clk % trigger_for_x_clks == 0)
 		{
-			cout << ref_clk << " : " << clk << endl;
 			end[i] = cores[i]->tick();
 		}		
 	}

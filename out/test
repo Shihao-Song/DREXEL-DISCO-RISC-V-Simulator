@@ -1,0 +1,6 @@
+Instruction,Core ID,Begin Execution,End Execution
+<slli x10, x22, 3>,0,0,1
+<add x10, x10, x25>,0,1,2
+<ld x9, 0(x10)>,0,2,3
+<bne x9, x24, 12>,0,3,4
+<addi x22, x22, 1>,0,4,5
