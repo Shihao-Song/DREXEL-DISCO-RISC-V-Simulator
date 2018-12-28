@@ -1,11 +1,15 @@
 #include "Core.h"
 
-Core::Core(const string &fname, ofstream *out) : out(out), 
+Core::Core(Config &config, const string &fname, ofstream *out) : out(out), 
 						clk(0), 
 						PC(0),
 						instr_mem(new Instruction_Memory(fname))
 {
-
+	pipeline_info.num_stages_mul = config.get_num_stages_mul();
+	pipeline_info.num_stages_div = config.get_num_stages_div();
+	pipeline_info.num_stages_fadd = config.get_num_stages_fadd();
+	pipeline_info.num_stages_fmul = config.get_num_stages_fmul();
+	pipeline_info.num_stages_fdiv = config.get_num_stages_fdiv();
 }
 
 /*
