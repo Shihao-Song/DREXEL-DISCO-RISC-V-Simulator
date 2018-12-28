@@ -25,13 +25,6 @@ public:
 		}
 	}
 
-	int get_execution_time()
-	{
-		int additional_delay = int(ceil(1.0 / frequency)) - 1;
-		
-		return (ref_clk + additional_delay); // We assume reference clock ticks every 1 ns
-	}
-
 private:
 	vector<Core*> cores;
 

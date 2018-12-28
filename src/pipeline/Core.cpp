@@ -20,30 +20,36 @@ bool Core::tick()
 	{
 		serve_pending_instrs();
 	}
-
+	
 	/*
 		Step Two: Where simulation happens
 	*/
-	// Get Instruction
-	Instruction &instruction = instr_mem->get_instruction(PC);
+	if (PC <= instr_mem->last_addr())
+	{
+		// Get Instruction
+		Instruction &instruction = instr_mem->get_instruction(PC);
 
-	// Increment PC
-	PC += 4;
+		// Increment PC
+		// TODO, PC should be incremented or decremented based on instruction
+		PC += 4;
 
-	/*
-		Step Three: Simulator related
-	*/
-	instruction.begin_exe = clk;
-	instruction.end_exe = clk + 1; // Single-cycle always takes one clock cycle to complete
-	pending_queue.push_back(instruction);
+		/*
+			Step Three: Simulator related
+		*/
+		instruction.begin_exe = clk;
+		
+		// Single-cycle always takes one clock cycle to complete
+		instruction.end_exe = clk + 1; 
+	
+		pending_queue.push_back(instruction);
+	}
 
 	clk++;
 
 	/*
-		Step Four: Should we shut down simulation
+		Step Four: Should we shut down simulator
 	*/
-	// Are we reaching the last instruction
-	if (PC > instr_mem->last_addr())
+	if (pending_queue.size() == 0)
 	{
 		return false;
 	}
