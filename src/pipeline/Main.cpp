@@ -34,7 +34,7 @@ int main(int argc, const char *argv[])
 
 	for (int i = 0; i < config.get_num_cores(); i++)
 	{
-		Core *core = new Core(config, argv[(3 + i)], &out);
+		Core *core = new Core(argv[(3 + i)], &out);
 		core->id = i;
 
 		cores.push_back(core);

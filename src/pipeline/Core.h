@@ -8,14 +8,13 @@
 
 #include "Instruction_Memory.h"
 #include "Instruction.h"
-#include "Config.h"
 
 using namespace std;
 
 class Core
 {
 public:
-	Core(Config &config, const string &fname, ofstream *out);
+	Core(const string &fname, ofstream *out);
 
 	bool tick(); // FALSE means all the instructions are exhausted
 
@@ -30,17 +29,6 @@ public:
 
 private:
 	
-	struct Pipeline
-	{
-		int num_stages_mul;
-		int num_stages_div;
-		int num_stages_fadd;
-		int num_stages_fmul;
-		int num_stages_fdiv;
-	};
-
-	Pipeline pipeline_info; // This is used to calculate estimated end execution time
-
 	ofstream *out; // Output file
 
 	unsigned long long int clk;

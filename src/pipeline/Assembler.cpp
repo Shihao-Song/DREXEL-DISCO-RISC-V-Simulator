@@ -71,7 +71,7 @@ Assembler::Assembler(Instruction_Memory *instr_mem, const string trace_fname) :
 	opr_to_opcode.insert(pair<string, int>("add", 51));	
 	opr_to_funct3.insert(pair<string, int>("add", 0));
 	opr_to_funct7.insert(pair<string, int>("add", 0));
-	
+
 	// sub
 	opr_to_opcode.insert(pair<string, int>("sub", 51));	
 	opr_to_funct3.insert(pair<string, int>("sub", 0));
@@ -125,6 +125,7 @@ Assembler::Assembler(Instruction_Memory *instr_mem, const string trace_fname) :
 		UJ-type instruction
 	*/	
 	opr_to_opcode.insert(pair<string, int>("jal", 111));	
+	
 }
 
 void Assembler::write_into_instr_mem()

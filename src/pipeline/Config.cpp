@@ -56,26 +56,6 @@ void Config::parse(const string &fname)
         {
         	mc_mode = atoi(tokens[1].c_str());
 	}
-	else if(tokens[0] == "num_stages_mul")
-        {
-        	num_stages_mul = atoi(tokens[1].c_str());
-	}
-	else if(tokens[0] == "num_stages_div")
-        {
-        	num_stages_div = atoi(tokens[1].c_str());
-	}
-	else if(tokens[0] == "num_stages_fadd")
-        {
-        	num_stages_fadd = atoi(tokens[1].c_str());
-	}
-	else if(tokens[0] == "num_stages_fmul")
-        {
-        	num_stages_fmul = atoi(tokens[1].c_str());
-	}
-	else if(tokens[0] == "num_stages_fdiv")
-        {
-        	num_stages_fdiv = atoi(tokens[1].c_str());
-	}
     }
 
     file.close();
