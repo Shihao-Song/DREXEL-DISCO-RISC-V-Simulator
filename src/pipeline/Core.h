@@ -51,9 +51,6 @@ private:
 
 	void printStats(list<Instruction>::iterator &ite);
 
-	/*
-		Group Three: State Machine 
-	*/
 };
 
 #endif
