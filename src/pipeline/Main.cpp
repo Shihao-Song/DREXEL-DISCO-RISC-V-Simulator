@@ -46,14 +46,7 @@ int main(int argc, const char *argv[])
 	/*
 		Run Simulation
 	*/
-	if (config.get_mc_mode() != 1)
-	{
-		run_simulation(socket);
-	}
-	else
-	{
-		socket->printInstrs();
-	}
+	run_simulation(socket);
 
 	/*
 		Free Resource
