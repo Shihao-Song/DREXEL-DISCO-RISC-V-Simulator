@@ -1,11 +1,12 @@
 #include "Core.h"
 
 Core::Core(const string &fname, ofstream *out) : out(out), 
-						clk(0), 
-						PC(0),
-						instr_mem(new Instruction_Memory(fname))
+						clk(0) 
 {
-
+	/*
+	 * Initialize Stages
+	 * */
+	if_stage = (new IF_Stage(fname, this));	
 }	
 
 /*
@@ -24,25 +25,7 @@ bool Core::tick()
 	/*
 		Step Two: Where simulation happens
 	*/
-	if (PC <= instr_mem->last_addr())
-	{
-		// Get Instruction
-		Instruction &instruction = instr_mem->get_instruction(PC);
-
-		// Increment PC
-		// TODO, PC should be incremented or decremented based on instruction
-		PC += 4;
-
-		/*
-			Step Three: Simulator related
-		*/
-		instruction.begin_exe = clk;
-		
-		// Single-cycle always takes one clock cycle to complete
-		instruction.end_exe = clk + 1; 
-	
-		pending_queue.push_back(instruction);
-	}
+	if_stage->tick();
 
 	clk++;
 

@@ -6,10 +6,13 @@
 #include <string>
 #include <list>
 
-#include "Instruction_Memory.h"
 #include "Instruction.h"
 
+#include "IF_Stage.h"
+
 using namespace std;
+
+class IF_Stage;
 
 class Core
 {
@@ -20,12 +23,7 @@ public:
 
 	int id; // Each core has its own ID
 
-	void printInstrs()
-	{
-		cout << "Core " << id << " : " << endl;
-
-		instr_mem->printInstr();
-	}
+	friend class IF_Stage;
 
 private:
 	
@@ -34,12 +32,9 @@ private:
 	unsigned long long int clk;
 
 	/*
-		Group One: Design Components Here, an instruction memory has already been
-		designed for you.
+		Group One: Add Stages here.
 	*/
-	long PC;
-
-	Instruction_Memory *instr_mem;
+	IF_Stage *if_stage;	
 
 	/*
 		Group Two: Simulator Related
@@ -50,7 +45,6 @@ private:
 	void serve_pending_instrs();
 
 	void printStats(list<Instruction>::iterator &ite);
-
 };
 
 #endif
