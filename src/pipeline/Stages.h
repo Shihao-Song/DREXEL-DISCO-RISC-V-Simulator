@@ -27,7 +27,15 @@ class WB_Stage;
 class IF_Stage
 {
 public:
-        IF_Stage(const string &fname, Core* core);
+        IF_Stage(const string &fname, Core* core) : instr_mem(new Instruction_Memory(fname)),
+							core(core),
+							PC(0),
+							stall(0),
+							bubble(0),
+							end(0)
+	{
+		if_id_reg.valid = 0;
+	}
 
         bool tick();
 
@@ -76,12 +84,12 @@ public:
 class ID_Stage
 {
 public:
-        ID_Stage()
+        ID_Stage() : stall(0), bubble(0), end(0)
         {
                 id_ex_reg.valid = 0;
         }
 
-        bool tick();
+        void tick();
 
         /*
          * Hazard detection unit: stall ID and IF stages, meanwhile, insert bubbles to
@@ -121,6 +129,7 @@ public:
 
                 int rd_index;
                 int rs_1_index;
+		int rs_2_index;
 	};
         Register id_ex_reg;
 };
@@ -128,12 +137,12 @@ public:
 class EX_Stage
 {
 public:
-        EX_Stage()
-        {
+        EX_Stage() : stall(0), bubble(0), end(0)
+	{
                 ex_mem_reg.valid = 0;
         }
 
-        bool tick();
+        void tick();
 
         /*
          * Important signals.
@@ -172,12 +181,12 @@ public:
 class MEM_Stage
 {
 public:
-        MEM_Stage()
+        MEM_Stage() : stall(0), bubble(0), end(0)
         {
                 mem_wb_reg.valid = 0;
         }
 
-        bool tick();
+        void tick();
 
         /*
          * Important signals.

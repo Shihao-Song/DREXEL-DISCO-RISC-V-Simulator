@@ -1,12 +1,5 @@
 #include "Stages.h"
 
-IF_Stage::IF_Stage(const string &fname, Core *core) : instr_mem(new Instruction_Memory(fname)),
-                                                        PC(0),
-                                                        core(core)
-{
-        if_id_reg.valid = 0;
-}
-
 bool IF_Stage::tick()
 {
         if (PC <= instr_mem->last_addr())
@@ -37,7 +30,7 @@ bool IF_Stage::tick()
 
                 // Initialize end execution time to 5 clock cycles, adjust it
                 // in the run time
-                instruction.end_exe = core->clk + 5;
+                instruction.end_exe = core->clk + 4;
 
                 // Push instruction into queue;
                 (core->pending_queue).push_back(instruction);
@@ -46,25 +39,126 @@ bool IF_Stage::tick()
 
                 return true;
         }
+	else
+	{
+		if_id_reg.valid = 0;
+		end = 1;
 
-        if_id_reg.valid = 0;
-
-	// TODO, end should be set
-        return false;
+        	return false;
+	}
 }
 
-bool ID_Stage::tick()
+void ID_Stage::tick()
 {
-        return false;
+	if (bubble == 1)
+        {
+                // A bubble is inserted, do nothing.
+                return;
+        }
+
+        if (end == 1)
+        {
+                // Instructions are run out, do nothing.
+                return;
+        }
+
+        if (if_stage->if_id_reg.valid == 0)
+        {
+                // EX_MEM register is invalid, do nothing.
+                return;
+        }
+	
+	/*
+         * Read from EX_MEM Register
+         **/
+	end = if_stage->end; // end signal is propagated from IF stage
+	
+	instr = if_stage->instr; // instruction pointer is also propagated from IF stage
+
+	id_ex_reg.valid = if_stage->if_id_reg.valid;
+
+	id_ex_reg.WB = if_stage->if_id_reg.WB;
+
+	id_ex_reg.rd_index = if_stage->if_id_reg.rd_index;
+	id_ex_reg.rs_1_index = if_stage->if_id_reg.rs_1_index;
+	id_ex_reg.rs_2_index = if_stage->if_id_reg.rs_2_index;
+}
+
+void EX_Stage::tick()
+{
+	if (bubble == 1)
+        {
+                // A bubble is inserted, do nothing.
+                return;
+        }
+
+        if (end == 1)
+        {
+                // Instructions are run out, do nothing.
+                return;
+        }
+
+        if (id_stage->id_ex_reg.valid == 0)
+        {
+                // EX_MEM register is invalid, do nothing.
+                return;
+        }
+	
+	/*
+         * Read from EX_MEM Register
+         **/
+	end = id_stage->end; // end signal is propagated from IF stage
+	
+	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
+
+	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
+
+	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
+
+	ex_mem_reg.rd_index = id_stage->id_ex_reg.rd_index;
+	ex_mem_reg.rs_1_index = id_stage->id_ex_reg.rs_1_index;
+	ex_mem_reg.rs_2_index = id_stage->id_ex_reg.rs_2_index;
+}
+
+void MEM_Stage::tick()
+{
+	if (bubble == 1)
+        {
+                // A bubble is inserted, do nothing.
+                return;
+        }
+
+        if (end == 1)
+        {
+                // Instructions are run out, do nothing.
+                return;
+        }
+
+        if (ex_stage->ex_mem_reg.valid == 0)
+        {
+                // EX_MEM register is invalid, do nothing.
+                return;
+        }
+	
+	/*
+         * Read from EX_MEM Register
+         **/
+	end = ex_stage->end; // end signal is propagated from IF stage
+	
+	instr = ex_stage->instr; // instruction pointer is also propagated from IF stage
+
+	mem_wb_reg.valid = ex_stage->ex_mem_reg.valid;
+
+	mem_wb_reg.WB = ex_stage->ex_mem_reg.WB;
+
+	mem_wb_reg.rd_index = ex_stage->ex_mem_reg.rd_index;
+	mem_wb_reg.rs_1_index = ex_stage->ex_mem_reg.rs_1_index;
+	mem_wb_reg.rs_2_index = ex_stage->ex_mem_reg.rs_2_index;
 }
 
 void WB_Stage::tick()
 {
-        /*
-         * Read from MEM_WB Register
-         **/
-
-        if (bubble == 1)
+	if (bubble == 1)
         {
                 // A bubble is inserted, do nothing.
                 return;
@@ -81,5 +175,15 @@ void WB_Stage::tick()
                 // MEM_WB register is invalid, do nothing.
                 return;
         }
+
+	
+	/*
+         * Read from MEM_WB Register
+         **/
+	end = mem_stage->end; // end signal is propagated from IF stage
+	
+	instr = mem_stage->instr; // instruction pointer is also propagated from IF stage
+
+	// TODO, read the rest of the register
 }
 
