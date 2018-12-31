@@ -50,7 +50,13 @@ void IF_Stage::tick()
 	instr = (core->pending_queue).end();
 	instr--;
 	
-	cout << "IF : " << instr->raw_instr;	
+	/*
+	 * De-bugging
+	 * */
+	if (DEBUG)
+	{
+		cout << "IF : " << instr->raw_instr << " | ";	
+	}
 }
 
 void ID_Stage::tick()
@@ -80,7 +86,7 @@ void ID_Stage::tick()
 	end = if_stage->end; // end signal is propagated from IF stage
 	
 	instr = if_stage->instr; // instruction pointer is also propagated from IF stage
-	cout << "ID : " << instr->raw_instr;	
+	
 	id_ex_reg.valid = if_stage->if_id_reg.valid;
 
 	id_ex_reg.WB = if_stage->if_id_reg.WB;
@@ -88,6 +94,14 @@ void ID_Stage::tick()
 	id_ex_reg.rd_index = if_stage->if_id_reg.rd_index;
 	id_ex_reg.rs_1_index = if_stage->if_id_reg.rs_1_index;
 	id_ex_reg.rs_2_index = if_stage->if_id_reg.rs_2_index;
+
+	/*
+	 * De-bugging
+	 * */
+	if (DEBUG)
+	{
+		cout << "ID : " << instr->raw_instr << " | ";	
+	}
 }
 
 void EX_Stage::tick()
@@ -118,12 +132,20 @@ void EX_Stage::tick()
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
-	cout << "EX : " << instr->raw_instr;	
+	
 	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
 
 	ex_mem_reg.rd_index = id_stage->id_ex_reg.rd_index;
 	ex_mem_reg.rs_1_index = id_stage->id_ex_reg.rs_1_index;
 	ex_mem_reg.rs_2_index = id_stage->id_ex_reg.rs_2_index;
+
+	/*
+	 * De-bugging
+	 * */
+	if (DEBUG)
+	{
+		cout << "EX : " << instr->raw_instr << " | ";	
+	}
 }
 
 void MEM_Stage::tick()
@@ -152,7 +174,7 @@ void MEM_Stage::tick()
 	end = ex_stage->end; // end signal is propagated from IF stage
 	
 	instr = ex_stage->instr; // instruction pointer is also propagated from IF stage
-	cout << "MEM : " << instr->raw_instr;	
+
 	mem_wb_reg.valid = ex_stage->ex_mem_reg.valid;
 
 	mem_wb_reg.WB = ex_stage->ex_mem_reg.WB;
@@ -160,6 +182,14 @@ void MEM_Stage::tick()
 	mem_wb_reg.rd_index = ex_stage->ex_mem_reg.rd_index;
 	mem_wb_reg.rs_1_index = ex_stage->ex_mem_reg.rs_1_index;
 	mem_wb_reg.rs_2_index = ex_stage->ex_mem_reg.rs_2_index;
+
+	/*
+	 * De-bugging
+	 * */
+	if (DEBUG)
+	{
+		cout << "MEM : " << instr->raw_instr << " | ";	
+	}
 }
 
 void WB_Stage::tick()
@@ -189,7 +219,10 @@ void WB_Stage::tick()
 	end = mem_stage->end; // end signal is propagated from IF stage
 	
 	instr = mem_stage->instr; // instruction pointer is also propagated from IF stage
-	cout << "WB : " << instr->raw_instr;	
-	// TODO, read the rest of the register
+	
+	if (DEBUG)
+	{
+		cout << "WB : " << instr->raw_instr << " | ";
+	}	
 }
 

@@ -9,6 +9,8 @@
 #include "Instruction.h"
 #include "Stages.h"
 
+#define DEBUG 0
+
 using namespace std;
 
 class IF_Stage;
