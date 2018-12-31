@@ -38,7 +38,13 @@ bool Core::tick()
 	/*
 		Step Two: Where simulation happens
 	*/
+	cout << "clk: " << clk << " : ";
+	wb_stage->tick();
+	mem_stage->tick();
+	ex_stage->tick();
+	id_stage->tick();	
 	if_stage->tick();
+	cout << endl;
 
 	clk++;
 

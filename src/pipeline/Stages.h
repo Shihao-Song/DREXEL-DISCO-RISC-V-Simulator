@@ -37,7 +37,7 @@ public:
 		if_id_reg.valid = 0;
 	}
 
-        bool tick();
+        void tick();
 
         /*
          * Important signals.

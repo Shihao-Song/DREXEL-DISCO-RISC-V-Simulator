@@ -1,80 +1,86 @@
 #include "Stages.h"
 
-bool IF_Stage::tick()
+void IF_Stage::tick()
 {
-        if (PC <= instr_mem->last_addr())
-        {
-                // Get Instruction
-                Instruction &instruction = instr_mem->get_instruction(PC);
-
-                // Increment PC
-                // TODO, PC should be incremented or decremented based on instruction
-                PC += 4;
-
-                /*
-                 * TODO, fix me. Simulate IF Stage here.
-                 * Example on how to extract fields have been given.
-                 * */
-                if_id_reg.valid = 1;
-
-                if_id_reg.WB = 1; // For demonstration, I assume all instructions are R-type.
-
-                if_id_reg.rd_index = (instruction.instruction >> 7) & 31;
-                if_id_reg.rs_1_index = (instruction.instruction >> (7 + 5 + 3)) & 31;
-                if_id_reg.rs_2_index = (instruction.instruction >> (7 + 5 + 3 + 5)) & 31;
-
-		/*
-                        Simulator related
-                */
-                instruction.begin_exe = core->clk;
-
-                // Initialize end execution time to 5 clock cycles, adjust it
-                // in the run time
-                instruction.end_exe = core->clk + 4;
-
-                // Push instruction into queue;
-                (core->pending_queue).push_back(instruction);
-                instr = (core->pending_queue).end();
-                instr--;
-
-                return true;
-        }
-	else
+	if (end == 1)
 	{
-		if_id_reg.valid = 0;
-		end = 1;
-
-        	return false;
+		// No instruction to run, return;
+		return;
 	}
+
+	if (PC == instr_mem->last_addr())
+	{
+		// No instruction to run for next clock cycle
+		end = 1;
+	}
+	
+	/*
+	 * Simulate IF stage here
+	 * */
+	// Get Instruction
+	Instruction &instruction = instr_mem->get_instruction(PC);
+
+	// Increment PC
+	// TODO, PC should be incremented or decremented based on instruction
+	PC += 4;
+
+	/*
+	 * TODO, fix me. Simulate IF Stage here.
+	 * Example on how to extract fields have been given.
+	 * */
+	if_id_reg.valid = 1;
+
+	if_id_reg.WB = 1; // For demonstration, I assume all instructions are R-type.
+
+	if_id_reg.rd_index = (instruction.instruction >> 7) & 31;
+	if_id_reg.rs_1_index = (instruction.instruction >> (7 + 5 + 3)) & 31;
+	if_id_reg.rs_2_index = (instruction.instruction >> (7 + 5 + 3 + 5)) & 31;
+
+	/*
+		Simulator related
+	*/
+	instruction.begin_exe = core->clk;
+
+	// Initialize end execution time to 5 clock cycles, adjust it
+	// in the run time
+	instruction.end_exe = core->clk + 4;
+
+	// Push instruction into queue;
+	(core->pending_queue).push_back(instruction);
+	instr = (core->pending_queue).end();
+	instr--;
+	
+	cout << "IF : " << instr->raw_instr;	
 }
 
 void ID_Stage::tick()
 {
-	if (bubble == 1)
+	if (stall == 1)
         {
-                // A bubble is inserted, do nothing.
+		// TODO, increment end execution time.
+
                 return;
         }
 
         if (end == 1)
         {
                 // Instructions are run out, do nothing.
-                return;
+		return;
         }
 
         if (if_stage->if_id_reg.valid == 0)
         {
-                // EX_MEM register is invalid, do nothing.
-                return;
+                // IF_ID register is invalid, do nothing.
+		return;
         }
 	
 	/*
-         * Read from EX_MEM Register
+         * Read from IF_ID Register
          **/
 	end = if_stage->end; // end signal is propagated from IF stage
 	
 	instr = if_stage->instr; // instruction pointer is also propagated from IF stage
-
+	cout << "ID : " << instr->raw_instr;	
 	id_ex_reg.valid = if_stage->if_id_reg.valid;
 
 	id_ex_reg.WB = if_stage->if_id_reg.WB;
@@ -105,14 +111,14 @@ void EX_Stage::tick()
         }
 	
 	/*
-         * Read from EX_MEM Register
+         * Read from ID_EX Register
          **/
 	end = id_stage->end; // end signal is propagated from IF stage
 	
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
-
+	cout << "EX : " << instr->raw_instr;	
 	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
 
 	ex_mem_reg.rd_index = id_stage->id_ex_reg.rd_index;
@@ -146,7 +152,7 @@ void MEM_Stage::tick()
 	end = ex_stage->end; // end signal is propagated from IF stage
 	
 	instr = ex_stage->instr; // instruction pointer is also propagated from IF stage
-
+	cout << "MEM : " << instr->raw_instr;	
 	mem_wb_reg.valid = ex_stage->ex_mem_reg.valid;
 
 	mem_wb_reg.WB = ex_stage->ex_mem_reg.WB;
@@ -183,7 +189,7 @@ void WB_Stage::tick()
 	end = mem_stage->end; // end signal is propagated from IF stage
 	
 	instr = mem_stage->instr; // instruction pointer is also propagated from IF stage
-
+	cout << "WB : " << instr->raw_instr;	
 	// TODO, read the rest of the register
 }
 
