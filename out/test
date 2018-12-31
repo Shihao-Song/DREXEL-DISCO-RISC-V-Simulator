@@ -1,1 +1,2 @@
 sub x2, x1, x3 => Core ID: 0; Begin Exe: 0; End Exe: 4
+and x12, x2, x5 => Core ID: 0; Begin Exe: 1; End Exe: 5
