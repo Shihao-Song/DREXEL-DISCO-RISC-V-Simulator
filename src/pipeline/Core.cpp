@@ -7,6 +7,19 @@ Core::Core(const string &fname, ofstream *out) : out(out),
 	 * Initialize Stages
 	 * */
 	if_stage = (new IF_Stage(fname, this));	
+	id_stage = (new ID_Stage());
+	ex_stage = (new EX_Stage());
+	mem_stage = (new MEM_Stage());
+	wb_stage = (new WB_Stage());
+
+	wb_stage->mem_stage = mem_stage;
+	mem_stage->ex_stage = ex_stage;
+	ex_stage->id_stage = id_stage;
+	
+	id_stage->if_stage = if_stage;
+	id_stage->ex_stage = ex_stage;
+	id_stage->mem_stage = mem_stage;
+	id_stage->wb_stage = wb_stage;	
 }	
 
 /*

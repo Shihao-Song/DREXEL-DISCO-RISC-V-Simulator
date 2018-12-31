@@ -7,12 +7,15 @@
 #include <list>
 
 #include "Instruction.h"
-
-#include "IF_Stage.h"
+#include "Stages.h"
 
 using namespace std;
 
 class IF_Stage;
+class ID_Stage;
+class EX_Stage;
+class MEM_Stage;
+class WB_Stage;
 
 class Core
 {
@@ -35,6 +38,10 @@ private:
 		Group One: Add Stages here.
 	*/
 	IF_Stage *if_stage;	
+	ID_Stage *id_stage;
+	EX_Stage *ex_stage;
+	MEM_Stage *mem_stage;
+	WB_Stage *wb_stage;
 
 	/*
 		Group Two: Simulator Related
