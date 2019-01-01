@@ -17,57 +17,88 @@ void IF_Stage::tick()
 	/*
 	 * Simulate IF stage here
 	 * */
-	// Get Instruction
-	Instruction &instruction = instr_mem->get_instruction(PC);
-
-	// Increment PC
-	// TODO, PC should be incremented or decremented based on instruction
-	PC += 4;
-
-	/*
-	 * TODO, fix me. Simulate IF Stage here.
-	 * Example on how to extract fields have been given.
-	 * */
-	if_id_reg.valid = 1;
-
-	if_id_reg.WB = 1; // For demonstration, I assume all instructions are R-type.
-
-	if_id_reg.rd_index = (instruction.instruction >> 7) & 31;
-	if_id_reg.rs_1_index = (instruction.instruction >> (7 + 5 + 3)) & 31;
-	if_id_reg.rs_2_index = (instruction.instruction >> (7 + 5 + 3 + 5)) & 31;
-
-	/*
-		Simulator related
-	*/
-	instruction.begin_exe = core->clk;
-
-	// Initialize end execution time to 5 clock cycles, adjust it
-	// in the run time
-	instruction.end_exe = core->clk + 4;
-
-	// Push instruction into queue;
-	(core->pending_queue).push_back(instruction);
-	instr = (core->pending_queue).end();
-	instr--;
-	
-	/*
-	 * De-bugging
-	 * */
-	if (DEBUG)
+	if (stall == 0)
 	{
-		cout << "IF : " << instr->raw_instr << " | ";	
+		// Get Instruction
+		Instruction &instruction = instr_mem->get_instruction(PC);
+
+		// Increment PC
+		// TODO, PC should be incremented or decremented based on instruction
+		PC += 4;
+
+		/*
+		 * TODO, fix me. Simulate IF Stage here.
+		 * Example on how to extract fields have been given.
+		 * */
+		if_id_reg.valid = 1;
+
+		if_id_reg.WB = 1; // For demonstration, I assume all instructions are R-type.
+
+		if_id_reg.rd_index = (instruction.instruction >> 7) & 31;
+		if_id_reg.rs_1_index = (instruction.instruction >> (7 + 5 + 3)) & 31;
+		if_id_reg.rs_2_index = (instruction.instruction >> (7 + 5 + 3 + 5)) & 31;
+
+		/*
+			Simulator related
+		*/
+		instruction.begin_exe = core->clk;
+
+		// Initialize end execution time to 5 clock cycles, adjust it
+		// in the run time
+		instruction.end_exe = core->clk + 10;
+
+		// Push instruction into queue;
+		(core->pending_queue).push_back(instruction);
+		instr = (core->pending_queue).end();
+		instr--;
+
+		/*
+	 	* De-bugging
+	 	* */
+		if (DEBUG)
+		{
+			cout << "IF : " << instr->raw_instr << " | ";	
+		}
 	}
+}
+
+void ID_Stage::hazard_detection()
+{
+	/*
+	 * (1) EX/MEM.rd = ID/EX.rs1
+	 * (2) EX/MEM.rd = ID/EX.rs2
+	 * (3) MEM/WB.rd = ID/EX.rs1
+	 * (4) MEM/WB.rd = ID/EX.rs2
+	 * */
+	if (ex_stage->ex_mem_reg.valid == 1)
+	{
+		if (ex_stage->ex_mem_reg.rd_index == id_ex_reg.rs_1_index || 
+			ex_stage->ex_mem_reg.rd_index == id_ex_reg.rs_2_index)
+		{
+			if_stage->stall = 1; // Fetching should not proceed.
+			ex_stage->bubble = 1;
+
+			return;
+		}
+	}
+	else if (mem_stage->mem_wb_reg.valid == 1)
+	{
+		if (mem_stage->mem_wb_reg.rd_index == id_ex_reg.rs_1_index || 
+			mem_stage->mem_wb_reg.rd_index == id_ex_reg.rs_2_index)
+		{
+			if_stage->stall = 1; // Fetching should not proceed.
+			ex_stage->bubble = 1;
+
+			return;
+		}
+	}
+
+	if_stage->stall = 0; // No hazard found, fetching proceed.
+	ex_stage->bubble = 0; // No hazard found, execution proceed.
 }
 
 void ID_Stage::tick()
 {
-	if (stall == 1)
-        {
-		// TODO, increment end execution time.
-
-                return;
-        }
-
         if (end == 1)
         {
                 // Instructions are run out, do nothing.
@@ -88,6 +119,7 @@ void ID_Stage::tick()
 	instr = if_stage->instr; // instruction pointer is also propagated from IF stage
 	
 	id_ex_reg.valid = if_stage->if_id_reg.valid;
+	if_stage->if_id_reg.valid = 0; // Already read, set to 0
 
 	id_ex_reg.WB = if_stage->if_id_reg.WB;
 
@@ -95,6 +127,7 @@ void ID_Stage::tick()
 	id_ex_reg.rs_1_index = if_stage->if_id_reg.rs_1_index;
 	id_ex_reg.rs_2_index = if_stage->if_id_reg.rs_2_index;
 
+	hazard_detection();
 	/*
 	 * De-bugging
 	 * */
@@ -132,7 +165,8 @@ void EX_Stage::tick()
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
-	
+	id_stage->id_ex_reg.valid = 0;
+
 	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
 
 	ex_mem_reg.rd_index = id_stage->id_ex_reg.rd_index;
@@ -150,12 +184,6 @@ void EX_Stage::tick()
 
 void MEM_Stage::tick()
 {
-	if (bubble == 1)
-        {
-                // A bubble is inserted, do nothing.
-                return;
-        }
-
         if (end == 1)
         {
                 // Instructions are run out, do nothing.
@@ -176,6 +204,7 @@ void MEM_Stage::tick()
 	instr = ex_stage->instr; // instruction pointer is also propagated from IF stage
 
 	mem_wb_reg.valid = ex_stage->ex_mem_reg.valid;
+	ex_stage->ex_mem_reg.valid = 0;
 
 	mem_wb_reg.WB = ex_stage->ex_mem_reg.WB;
 
@@ -194,12 +223,6 @@ void MEM_Stage::tick()
 
 void WB_Stage::tick()
 {
-	if (bubble == 1)
-        {
-                // A bubble is inserted, do nothing.
-                return;
-        }
-
         if (end == 1)
         {
                 // Instructions are run out, do nothing.
@@ -220,6 +243,8 @@ void WB_Stage::tick()
 	
 	instr = mem_stage->instr; // instruction pointer is also propagated from IF stage
 	
+	mem_stage->mem_wb_reg.valid = 0; 
+
 	if (DEBUG)
 	{
 		cout << "WB : " << instr->raw_instr << " | ";
