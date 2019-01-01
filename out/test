@@ -1,2 +1,4 @@
-sub x2, x1, x3 => Core ID: 0; Begin Exe: 0; End Exe: 10
-and x12, x2, x5 => Core ID: 0; Begin Exe: 1; End Exe: 11
+sub x2, x1, x3 => Core ID: 0; Begin Exe: 0; End Exe: 4
+and x12, x2, x5 => Core ID: 0; Begin Exe: 1; End Exe: 7
+or x13, x6, x2 => Core ID: 0; Begin Exe: 4; End Exe: 8
+add x14, x2, x2 => Core ID: 0; Begin Exe: 5; End Exe: 9
