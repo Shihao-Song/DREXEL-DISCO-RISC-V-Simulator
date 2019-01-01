@@ -4,16 +4,17 @@ void IF_Stage::tick()
 {
 	if (end == 1)
 	{
-		// No instruction to run, return;
+		// No instruction to run, return.
 		return;
 	}
 
 	if (PC == instr_mem->last_addr())
 	{
-		// No instruction to run for next clock cycle
+		// No instruction to run for next clock cycle since we have reached the last 
+		// instruction.
 		end = 1;
 	}
-	
+
 	/*
 	 * Simulate IF stage here
 	 * */
@@ -32,7 +33,8 @@ void IF_Stage::tick()
 		 * */
 		if_id_reg.valid = 1;
 
-		if_id_reg.WB = 1; // For demonstration, I assume all instructions are R-type.
+		// For demonstration, I assume all instructions are R-type.
+		if_id_reg.WB = 1; 
 
 		if_id_reg.rd_index = (instruction.instruction >> 7) & 31;
 		if_id_reg.rs_1_index = (instruction.instruction >> (7 + 5 + 3)) & 31;
@@ -43,11 +45,11 @@ void IF_Stage::tick()
 		*/
 		instruction.begin_exe = core->clk;
 
-		// Initialize end execution time to 5 clock cycles, adjust it
-		// in the run time
-		instruction.end_exe = core->clk + 10;
+		// Initialize end execution time to 5 clock cycles but adjust it
+		// if a stall detected.
+		instruction.end_exe = core->clk + 4;
 
-		// Push instruction into queue;
+		// Push instruction object into queue
 		(core->pending_queue).push_back(instruction);
 		instr = (core->pending_queue).end();
 		instr--;
@@ -65,6 +67,11 @@ void IF_Stage::tick()
 void ID_Stage::hazard_detection()
 {
 	/*
+	 * TODO, fix me, please modify this function in order to get a complete detection unit.
+	 * For demonstration, I assume all instructions are R-type (WB is always set).
+	 * */
+
+	/*
 	 * (1) EX/MEM.rd = ID/EX.rs1
 	 * (2) EX/MEM.rd = ID/EX.rs2
 	 * (3) MEM/WB.rd = ID/EX.rs1
@@ -76,7 +83,10 @@ void ID_Stage::hazard_detection()
 			ex_stage->ex_mem_reg.rd_index == id_ex_reg.rs_2_index)
 		{
 			if_stage->stall = 1; // Fetching should not proceed.
-			ex_stage->bubble = 1;
+			stall = 1; // ID should also stall.
+			ex_stage->bubble = 1; // EX stage should not accept any new instructions
+
+			instr->end_exe += 1; // The end execution time should be incremented by 1.
 
 			return;
 		}
@@ -87,19 +97,23 @@ void ID_Stage::hazard_detection()
 			mem_stage->mem_wb_reg.rd_index == id_ex_reg.rs_2_index)
 		{
 			if_stage->stall = 1; // Fetching should not proceed.
-			ex_stage->bubble = 1;
+			stall = 1; // ID should also stall.
+			ex_stage->bubble = 1; // EX stage should not accept any new instructions
 
+			instr->end_exe += 1; // The end execution time should be incremented by 1.
+			
 			return;
 		}
 	}
 
 	if_stage->stall = 0; // No hazard found, fetching proceed.
+	stall = 0; // No hazard found, ID stage proceed.
 	ex_stage->bubble = 0; // No hazard found, execution proceed.
 }
 
 void ID_Stage::tick()
 {
-        if (end == 1)
+        if (end == 1 && stall == 0)
         {
                 // Instructions are run out, do nothing.
 		return;
@@ -119,7 +133,6 @@ void ID_Stage::tick()
 	instr = if_stage->instr; // instruction pointer is also propagated from IF stage
 	
 	id_ex_reg.valid = if_stage->if_id_reg.valid;
-	if_stage->if_id_reg.valid = 0; // Already read, set to 0
 
 	id_ex_reg.WB = if_stage->if_id_reg.WB;
 
@@ -133,7 +146,14 @@ void ID_Stage::tick()
 	 * */
 	if (DEBUG)
 	{
-		cout << "ID : " << instr->raw_instr << " | ";	
+		cout << "ID : " << instr->raw_instr;
+		
+		if (stall)
+		{
+			cout << " (stalled) ";
+		}
+
+		cout << " | ";	
 	}
 }
 
@@ -153,7 +173,7 @@ void EX_Stage::tick()
 
         if (id_stage->id_ex_reg.valid == 0)
         {
-                // EX_MEM register is invalid, do nothing.
+                // ID_EX register is invalid, do nothing.
                 return;
         }
 	
@@ -165,7 +185,8 @@ void EX_Stage::tick()
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
-	id_stage->id_ex_reg.valid = 0;
+	id_stage->id_ex_reg.valid = 0; // I only allow any unique instruction object to be read only
+					// once to increase program performance.
 
 	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
 
