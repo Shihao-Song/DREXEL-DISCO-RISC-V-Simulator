@@ -29,7 +29,7 @@ bool Core::tick()
 		
 	// Step Three: How do you calculate memory location?
 	
-	// Step Four: Time to load from memory to register.
+	// Step Four: Load from memory to register.
 
 	return true;
 }

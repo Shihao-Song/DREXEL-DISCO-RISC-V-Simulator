@@ -7,7 +7,8 @@ int main()
 	Core core;
 	
 	// Simulate
-	
+	core.tick();
+
 	// Print result
 	core.printResult();
 }
