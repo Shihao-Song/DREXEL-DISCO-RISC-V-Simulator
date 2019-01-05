@@ -29,7 +29,7 @@ private:
 
 	unsigned int instruction = 0x00053483; // Pre-coded instruction
 
-	uint8_t *data_mem;
+	uint8_t *data_mem; // Byte-addressable
 
 	int64_t *regs;
 };
