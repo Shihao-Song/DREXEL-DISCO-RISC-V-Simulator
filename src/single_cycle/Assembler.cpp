@@ -56,6 +56,9 @@ Assembler::Assembler(Instruction_Memory *instr_mem, const string trace_fname) :
 	opr_to_opcode.insert(pair<string, int>("andi", 19));	
 	opr_to_funct3.insert(pair<string, int>("andi", 7));
 	
+	// jalr
+	opr_to_opcode.insert(pair<string, int>("jalr", 103));
+        opr_to_funct3.insert(pair<string, int>("jalr", 0));
 
 	/*
 		S-type instructions
@@ -198,9 +201,9 @@ void Assembler::write_into_instr_mem()
 				
 				instr.instruction |= (funct7 << (7 + 5 + 3 + 5 + 5));
 			}
-			else if ( opr == "ld" )
+			else if ( opr == "ld" || opr == "jalr" )
 			{
-				// Load instruction
+				// Special I-type instruction
 				int opcode = opr_to_opcode.find(opr)->second;
 				instr.instruction |= opcode;
 
