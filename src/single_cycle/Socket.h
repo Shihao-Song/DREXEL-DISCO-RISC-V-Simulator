@@ -25,6 +25,11 @@ public:
 		}
 	}
 
+	int get_execution_time()
+	{
+		return ref_clk;
+	}
+
 private:
 	vector<Core*> cores;
 

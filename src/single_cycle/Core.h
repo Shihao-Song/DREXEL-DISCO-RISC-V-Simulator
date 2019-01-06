@@ -44,7 +44,6 @@ private:
 	/*
 		Group Two: Simulator Related
 	*/
-	// For demonstration only, you should use your linked list data structure.
 	list<Instruction> pending_queue;
 
 	void serve_pending_instrs();
