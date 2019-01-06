@@ -3,9 +3,8 @@ A simple but cycle-accurate RISC-V full system simulator designed by Drexel DISC
 P.I.s: Dr. Anup Das, Dr. Nagarajan Kandasamy
 
 Course Projects Based on DREXEL-DISCO-RISC-V-Simulator:
-(1) Introduction to RISC-V Assembly Programming and Simulator Design Procedure
-(2) Single-cycle RISC-V Simulation with Exploration to Multi-core System
-(3) Pipelining RISC-V Simulation with Data Forwarding
+(1) Single-cycle RISC-V Simulation with Exploration to Multi-core System
+(2) Pipelining RISC-V Simulation with Data Forwarding
 
 To compile:
 bash compile.bash single-cycle OR
