@@ -16,7 +16,12 @@ public:
 	Socket(const Config &configs, vector<Core *> &cores);
 
 	bool tick(); // FALSE means all the instructions are exhausted
-	
+
+	int get_execution_time()
+	{
+		return ref_clk;
+	}
+
 private:
 	vector<Core*> cores;
 

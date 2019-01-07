@@ -116,6 +116,7 @@ void ID_Stage::tick()
         if (end == 1 && stall == 0)
         {
                 // Instructions are run out, do nothing.
+
 		return;
         }
 
@@ -185,8 +186,8 @@ void EX_Stage::tick()
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
-	id_stage->id_ex_reg.valid = 0; // I only allow any unique instruction object to be read only
-					// once to increase program performance.
+	id_stage->id_ex_reg.valid = 0; // I only allow any unique instruction to be read only
+					// once in order to increase program performance.
 
 	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
 

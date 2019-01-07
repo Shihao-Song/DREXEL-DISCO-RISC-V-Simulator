@@ -48,6 +48,8 @@ int main(int argc, const char *argv[])
 	*/
 	run_simulation(socket);
 
+	cout << "Execution Time (ns): " << socket->get_execution_time() << endl;
+
 	/*
 		Free Resource
 	*/

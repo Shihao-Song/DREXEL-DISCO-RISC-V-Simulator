@@ -31,7 +31,6 @@ public:
 							core(core),
 							PC(0),
 							stall(0),
-							bubble(0),
 							end(0)
 	{
 		if_id_reg.valid = 0;
@@ -45,7 +44,6 @@ public:
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
 
         int stall; // Is the stage stalled?
-        int bubble; // A bubble is inserted?
         int end; // All instructions are exhausted?
 
         /*
@@ -84,7 +82,7 @@ public:
 class ID_Stage
 {
 public:
-        ID_Stage() : stall(0), bubble(0), end(0)
+        ID_Stage() : stall(0), end(0)
         {
                 id_ex_reg.valid = 0;
         }
@@ -103,7 +101,6 @@ public:
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
 
         int stall; // Is the stage stalled?
-        int bubble; // A bubble is inserted?
 	int end; // All instructions are exhausted?
 
         /*
@@ -137,7 +134,7 @@ public:
 class EX_Stage
 {
 public:
-        EX_Stage() : stall(0), bubble(0), end(0)
+        EX_Stage() : bubble(0), end(0)
 	{
                 ex_mem_reg.valid = 0;
         }
@@ -149,7 +146,6 @@ public:
          * */
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
 
-        int stall; // Is the stage stalled?
         int bubble; // A bubble is inserted?
         int end; // All instructions are exhausted?
 
@@ -181,7 +177,7 @@ public:
 class MEM_Stage
 {
 public:
-        MEM_Stage() : stall(0), bubble(0), end(0)
+        MEM_Stage() : end(0)
         {
                 mem_wb_reg.valid = 0;
         }
@@ -193,8 +189,6 @@ public:
          * */
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
 
-        int stall; // Is the stage stalled?
-        int bubble; // A bubble is inserted?
         int end; // All instructions are exhausted?
 	
 	/*
@@ -225,7 +219,7 @@ public:
 class WB_Stage
 {
 public:
-        WB_Stage() : stall(0), bubble(0), end(0)
+        WB_Stage() : end(0)
         {
 
         }
@@ -237,8 +231,6 @@ public:
          * */
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
 
-        int stall; // Is the stage stalled?
-        int bubble; // A bubble is inserted?
         int end; // All instructions are exhausted?
 
         /*

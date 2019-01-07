@@ -38,10 +38,10 @@ bool Core::tick()
 	/*
 		Step Two: Where simulation happens
 	*/
-//	if (DEBUG)
-//	{
+	if (DEBUG)
+	{
 		cout << "clk: " << clk << " : ";
-//	}
+	}
 
 	wb_stage->tick();
 	mem_stage->tick();
@@ -49,10 +49,10 @@ bool Core::tick()
 	id_stage->tick();	
 	if_stage->tick();
 	
-//	if (DEBUG)
-//	{
+	if (DEBUG)
+	{
 		cout << endl;
-//	}
+	}
 
 	clk++;
 
