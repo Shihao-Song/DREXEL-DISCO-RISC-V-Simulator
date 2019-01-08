@@ -24,9 +24,6 @@ Core::Core(const string &fname, ofstream *out) : out(out),
 	id_stage->mem_stage = mem_stage;
 }	
 
-/*
-	TODO - Add more functions and modify tick() to simulate single-cycle RISC-V architecture
-*/
 bool Core::tick()
 {
 	/*

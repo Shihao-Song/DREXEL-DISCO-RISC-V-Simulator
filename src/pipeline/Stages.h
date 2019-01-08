@@ -149,10 +149,10 @@ public:
 
         /*
          * Important signals.
-         * */
+	*/
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
-
-        int bubble; // A bubble is inserted?
+        
+	int bubble; // A bubble is inserted?
         int end; // All instructions are exhausted?
 
 	/*
@@ -198,8 +198,8 @@ public:
          * Important signals.
          * */
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
-
-        int end; // All instructions are exhausted?
+        
+	int end; // All instructions are exhausted?
 	
 	/*
          * Related Class
@@ -244,8 +244,8 @@ public:
          * Important signals.
          * */
         list<Instruction>::iterator instr; // Points to the instruction currently in the stage
-
-        int end; // All instructions are exhausted?
+        
+	int end; // All instructions are exhausted?
 
         /*
          * Related Class

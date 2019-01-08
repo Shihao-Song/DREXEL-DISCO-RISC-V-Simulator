@@ -181,7 +181,7 @@ void EX_Stage::tick()
 	 * FIXME, simulate EX stage here
          **/
 	end = id_stage->end; // end signal is propagated from IF stage
-	
+
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
@@ -221,9 +221,9 @@ void MEM_Stage::tick()
 	 * FIXME, simulate MEM stage here.
          **/
 	end = ex_stage->end; // end signal is propagated from IF stage
-	
-	instr = ex_stage->instr; // instruction pointer is also propagated from IF stage
 
+	instr = ex_stage->instr; // instruction pointer is also propagated from IF stage
+	
 	mem_wb_reg.valid = ex_stage->ex_mem_reg.valid;
 	ex_stage->ex_mem_reg.valid = 0;
 
