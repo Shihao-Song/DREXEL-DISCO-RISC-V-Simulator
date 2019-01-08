@@ -13,13 +13,15 @@ Core::Core(const string &fname, ofstream *out) : out(out),
 	wb_stage = (new WB_Stage());
 
 	wb_stage->mem_stage = mem_stage;
+	wb_stage->id_stage = id_stage;
+
 	mem_stage->ex_stage = ex_stage;
+	
 	ex_stage->id_stage = id_stage;
 	
 	id_stage->if_stage = if_stage;
 	id_stage->ex_stage = ex_stage;
 	id_stage->mem_stage = mem_stage;
-	id_stage->wb_stage = wb_stage;	
 }	
 
 /*

@@ -116,7 +116,6 @@ void ID_Stage::tick()
         if (end == 1 && stall == 0)
         {
                 // Instructions are run out, do nothing.
-
 		return;
         }
 
@@ -127,7 +126,7 @@ void ID_Stage::tick()
         }
 	
 	/*
-         * Read from IF_ID Register
+	 * FIXME, simulate ID stage here.
          **/
 	end = if_stage->end; // end signal is propagated from IF stage
 	
@@ -179,15 +178,15 @@ void EX_Stage::tick()
         }
 	
 	/*
-         * Read from ID_EX Register
+	 * FIXME, simulate EX stage here
          **/
 	end = id_stage->end; // end signal is propagated from IF stage
 	
 	instr = id_stage->instr; // instruction pointer is also propagated from IF stage
 
 	ex_mem_reg.valid = id_stage->id_ex_reg.valid;
-	id_stage->id_ex_reg.valid = 0; // I only allow any unique instruction to be read only
-					// once in order to increase program performance.
+	id_stage->id_ex_reg.valid = 0; // I only allow any unique instruction to be read only 
+					// once in order to increase simulator performance.
 
 	ex_mem_reg.WB = id_stage->id_ex_reg.WB;
 
@@ -219,7 +218,7 @@ void MEM_Stage::tick()
         }
 	
 	/*
-         * Read from EX_MEM Register
+	 * FIXME, simulate MEM stage here.
          **/
 	end = ex_stage->end; // end signal is propagated from IF stage
 	
@@ -259,7 +258,7 @@ void WB_Stage::tick()
 
 	
 	/*
-         * Read from MEM_WB Register
+	 * FIXME, simulate WB stage here.
          **/
 	end = mem_stage->end; // end signal is propagated from IF stage
 	

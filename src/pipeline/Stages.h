@@ -33,6 +33,7 @@ public:
 							stall(0),
 							end(0)
 	{
+		// Initially, IF/ID Register is invalid.
 		if_id_reg.valid = 0;
 	}
 
@@ -52,7 +53,7 @@ public:
         Core *core;
 
 	/*
-         * Design components here
+         * TODO, Design components of IF stage here
          * */
         long PC;
 
@@ -62,9 +63,9 @@ public:
          * TODO, define your IF/ID register here.
          * */
         /*
-         * For demonstration (of hazard detection) only, delete the followings please.
-         * I assume all R-type instructions for demonstration.
-         * */
+	 * Here shows the prototype of an in-complete IF/ID register. You should 
+	 * extend it further to get a complete IF/ID register.
+	 * */
         struct Register
         {
                 int valid; // Is content inside register valid?
@@ -91,7 +92,7 @@ public:
 
         /*
          * Hazard detection unit: stall ID and IF stages, meanwhile, insert bubbles to
-         * EX, MEM and WB stages.
+         * EX stage.
          * */
         void hazard_detection();
 
@@ -105,19 +106,24 @@ public:
 
         /*
          * Related Class
+	 *
+	 * Hazard detection unit needs access to IF and EX stage.
          * */
         IF_Stage *if_stage;
         EX_Stage *ex_stage;
-        MEM_Stage *mem_stage;
-        WB_Stage *wb_stage;
+	MEM_Stage *mem_stage;
+
+	/*
+	 * TODO, design components of ID stage here.
+	 * */
 
         /*
-         * TODO, define your ID_EX register here.
+         * TODO, define your ID/EX register here.
          * */
         /*
-         * For demonstration (of hazard detection) only, delete the followings please.
-         * I assume all R-type instructions for demonstration.
-         * */
+         * Here shows the prototype of an in-complete ID/EX register. You should extend it further
+	 * to get a complete ID/EX register.
+	 * */
         struct Register
         {
                 int valid; // Is content inside register valid?
@@ -154,13 +160,17 @@ public:
          * */
         ID_Stage *id_stage;
 
+	/*
+	 * TODO, design components of EX stage here.
+	 * */
+
         /*
-         * TODO, define your EX_MEM register here.
+         * TODO, define your EX/MEM register here.
          * */
         /*
-         * For demonstration (of hazard detection) only, delete the followings please.
-         * I assume all R-type instructions for demonstration.
-         * */
+	 * Here shows the prototype of an in-complete EX/MEM register. Extend it further to a 
+	 * complete EX/MEM register.
+	 * */
         struct Register
         {
                 int valid; // Is content inside register valid?
@@ -196,13 +206,17 @@ public:
          * */
         EX_Stage *ex_stage;
 
+	/*
+	 * TODO, design component of MEM stage here.
+	 * */
+
         /*
-         * TODO, define your MEM_WB register here.
+         * TODO, define your MEM/WB register here.
          * */
         /*
-         * For demonstration (of hazard detection) only, delete the followings please.
-         * I assume all R-type instructions for demonstration.
-         * */
+	 * Here shows the prototype of an in-complete MEM/WB register. Extend it further to get
+	 * a complete MEM/WB register.
+	 * */
         struct Register
         {
                 int valid; // Is content inside register valid?
@@ -237,6 +251,11 @@ public:
          * Related Class
          * */
         MEM_Stage *mem_stage;
+	ID_Stage *id_stage;
+
+	/*
+	 * TODO, you should write to the register file defined in ID stage. Do you know why?
+	 * */
 };
 
 #endif
