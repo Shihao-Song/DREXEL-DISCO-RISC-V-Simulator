@@ -9,7 +9,7 @@ Assembler::Assembler(Instruction_Memory *instr_mem, const std::string trace_fnam
 {
     if (!file.good())
     {
-        cerr << "Bad trace file: " << trace_fname << endl;
+        std::cerr << "Bad trace file: " << trace_fname << "\n";
         exit(1);
     }
 

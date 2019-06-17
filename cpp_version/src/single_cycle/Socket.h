@@ -1,44 +1,45 @@
 #ifndef __SOCKET_H__
 #define __SOCKET_H__
 
-#include <vector>
 #include <cmath>
+#include <vector>
 
-#include "Core.h"
 #include "Config.h"
-
-using namespace std;
+#include "Core.h"
 
 class Socket
 {
-public:
-	// Constructor
-	Socket(const Config &configs, vector<Core *> &cores);
+    typedef uint64_t Addr;
+    typedef uint64_t Tick;
 
-	bool tick(); // FALSE means all the instructions are exhausted
+  public:
+    // Constructor
+    Socket(const Config &configs, std::vector<Core *> &cores);
 
-	void printInstrs()
-	{
-		for (int i = 0; i < cores.size(); i++)
-		{
-			cores[i]->printInstrs();
-		}
+    bool tick(); // FALSE means all the instructions are exhausted
+
+    void printInstrs()
+    {
+        for (int i = 0; i < cores.size(); i++)
+        {
+            cores[i]->printInstrs();
 	}
+    }
 
-	int get_execution_time()
-	{
-		return ref_clk;
-	}
+    int get_execution_time()
+    {
+        return ref_clk;
+    }
 
-private:
-	vector<Core*> cores;
+  private:
+    std::vector<Core*> cores;
 
-	unsigned long long int ref_clk; // Reference clock cycle, 1 GHz
+    Tick ref_clk; // Reference clock cycle, 1 GHz
 
-	unsigned long long int clk;
+    Tick clk;
 
-	int num_cores;
-	double frequency;
+    int num_cores;
+    double frequency;
 };
 
 #endif

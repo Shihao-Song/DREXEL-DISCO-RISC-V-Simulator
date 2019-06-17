@@ -1,49 +1,46 @@
 #ifndef __INSTRUCTION_MEMORY_H_
 #define __INSTRUCTION_MEMORY_H_
 
-#include <vector>
-#include <map>
 #include <bitset>
+#include <map>
+#include <vector>
 
-#include "Assembler.h"
 #include "Instruction.h"
-
-using namespace std;
 
 class Assembler;
 
 class Instruction_Memory
 {
-public:
-	Instruction_Memory(const string fname);
+    typedef uint64_t Addr;
+    typedef uint64_t Tick;
 
-	Instruction& get_instruction(long addr);
+  public:
+    Instruction_Memory(const std::string fname);
 
-	// Return the address of the last instruction
-	long last_addr() 
-	{ 
-		map<long, Instruction>::iterator ite = instructions.end();
-		ite--;
+    Instruction& get_instruction(Addr addr);
 
-		return ite->second.addr;
-	}
+    // Return the address of the last instruction
+    Addr last_addr() 
+    { 
+        std::map<Addr, Instruction>::iterator ite = instructions.end();
+        ite--;
 
-	friend class Assembler;
-	friend class Core;
-private:
-	map<long, Instruction> instructions;
+        return ite->second.addr;
+    }
 
-	// For debug only
-	void printInstr()
-	{
-		for (map<long, Instruction>::iterator ite = instructions.begin();
-				ite != instructions.end(); ite++)	
-		{
-			cout << "   " << ite->first << " : " << ite->second.raw_instr;
-			bitset<32> ins(ite->second.instruction);
-			cout << " => " << ins << endl;
-		}
-	}
+    std::map<Addr, Instruction> instructions;
+
+    // For debug only
+    void printInstr()
+    {
+        for (std::map<Addr, Instruction>::iterator ite = instructions.begin();
+                                                   ite != instructions.end(); ite++)	
+        {
+            std::cout << "   " << ite->first << " : " << ite->second.raw_instr;
+            std::bitset<32> ins(ite->second.instruction);
+            std::cout << " => " << ins << "\n";
+        }
+    }
 };
 
 #endif
