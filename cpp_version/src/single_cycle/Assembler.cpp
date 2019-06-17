@@ -155,8 +155,8 @@ void Assembler::write_into_instr_mem()
 
             // Note, I use debug_print as a debugging tool to verify the correctness of
             // parsing and bit operations.
-            std::bitset<32> debug_print;
-            cout << "\n[DEBUG] Original Instruction: " << line << "\n";
+            // std::bitset<32> debug_print;
+            // cout << "\n[DEBUG] Original Instruction: " << line << "\n";
 
             // (2) Determine instruction type
             if (opr == "add" ||
@@ -170,8 +170,8 @@ void Assembler::write_into_instr_mem()
                 // R-type instruction format
                 int opcode = opr_to_opcode.find(opr)->second;
                 instr.instruction |= opcode;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] Only opcode: " << debug_print << "\n"; 
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] Only opcode: " << debug_print << "\n"; 
 
                 // Extract rd
                 pos = line.find_first_of(' ', 0) + 1;
@@ -181,14 +181,14 @@ void Assembler::write_into_instr_mem()
 		
                 unsigned int rd_index = reg_name_to_index.find(rd)->second;
                 instr.instruction |= (rd_index << 7);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rd: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rd: " << debug_print << "\n";
                 
                 // Funct3
                 unsigned int funct3 = opr_to_funct3.find(opr)->second;
                 instr.instruction |= (funct3 << (7 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with F3 : " << debug_print << "\n"; 
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with F3 : " << debug_print << "\n"; 
 
                 // Extract rs1
                 pos = line.find_first_of(' ', pos + 1) + 1;
@@ -199,8 +199,8 @@ void Assembler::write_into_instr_mem()
                 unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
 		
                 instr.instruction |= (rs_1_index << (7 + 5 + 3));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs1: " << debug_print << "\n"; 
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs1: " << debug_print << "\n"; 
 
                 // Extract rs2
                 pos = line.find_first_of(' ', pos + 1) + 1;
@@ -210,15 +210,15 @@ void Assembler::write_into_instr_mem()
                 unsigned int rs_2_index = reg_name_to_index.find(rs_2)->second;
 		
                 instr.instruction |= (rs_2_index << (7 + 5 + 3 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs2: " << debug_print << "\n"; 
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs2: " << debug_print << "\n"; 
 
                 // Funct7
                 unsigned int funct7 = opr_to_funct7.find(opr)->second;
 		
                 instr.instruction |= (funct7 << (7 + 5 + 3 + 5 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with F7: " << debug_print << "\n"; 
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with F7: " << debug_print << "\n"; 
 
             }
             else if ( opr == "ld" || opr == "jalr" )
@@ -226,8 +226,8 @@ void Assembler::write_into_instr_mem()
                 // Special I-type instruction
                 int opcode = opr_to_opcode.find(opr)->second;
                 instr.instruction |= opcode;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
 
                 // Extract rd
                 pos = line.find_first_of(' ', 0) + 1;
@@ -237,14 +237,14 @@ void Assembler::write_into_instr_mem()
 		
                 unsigned int rd_index = reg_name_to_index.find(rd)->second;
                 instr.instruction |= (rd_index << 7);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rd: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rd: " << debug_print << "\n";
 
                 // Funct3
                 unsigned int funct3 = opr_to_funct3.find(opr)->second;
                 instr.instruction |= (funct3 << (7 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with F3: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with F3: " << debug_print << "\n";
 
                 // Extract immediate
                 pos = line.find_first_of(' ', pos + 1) + 1;
@@ -262,12 +262,12 @@ void Assembler::write_into_instr_mem()
                 unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
 
                 instr.instruction |= (rs_1_index << (7 + 5 + 3));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
 
                 instr.instruction |= (immediate << (7 + 5 + 3 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme: " << debug_print << "\n";
             }
             else if (opr == "addi" ||
                      opr == "slli" ||  
@@ -279,8 +279,8 @@ void Assembler::write_into_instr_mem()
                 // I-type instruction excluding ld
                 int opcode = opr_to_opcode.find(opr)->second;
                 instr.instruction |= opcode;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
 
                 // Extract rd
                 pos = line.find_first_of(' ', 0) + 1;
@@ -290,14 +290,14 @@ void Assembler::write_into_instr_mem()
 		
                 unsigned int rd_index = reg_name_to_index.find(rd)->second;
                 instr.instruction |= (rd_index << 7);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rd: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rd: " << debug_print << "\n";
 
                 // Funct3
                 unsigned int funct3 = opr_to_funct3.find(opr)->second;
                 instr.instruction |= (funct3 << (7 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with F3: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with F3: " << debug_print << "\n";
 
                 // Extract rs1
                 pos = line.find_first_of(' ', pos + 1) + 1;
@@ -308,8 +308,8 @@ void Assembler::write_into_instr_mem()
                 unsigned int rs_1_index = reg_name_to_index.find(rs_1)->second;
 		
                 instr.instruction |= (rs_1_index << (7 + 5 + 3));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
 
                 // Extract immediate
                 pos = line.find_first_of(' ', pos + 1) + 1;
@@ -318,8 +318,8 @@ void Assembler::write_into_instr_mem()
 		
                 int immediate = stoi(imme, &pos, 0);
                 instr.instruction |= (immediate << (7 + 5 + 3 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] imme: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] imme: " << debug_print << "\n";
             }
             else if (opr == "sd")
             {
@@ -354,31 +354,31 @@ void Assembler::write_into_instr_mem()
 
                 // Format instruction
 		instr.instruction |= opcode;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
 
                 int mask = 31;
                 int first_five_bits = mask & immediate;
                 instr.instruction |= (first_five_bits << 7);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme1: " << debug_print << "\n";
 
                 instr.instruction |= (funct3 << (7 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with F3: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with F3: " << debug_print << "\n";
 
                 instr.instruction |= (rs_1_index << (7 + 5 + 3));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
 		
                 instr.instruction |= (rs_2_index << (7 + 5 + 3 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs2: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs2: " << debug_print << "\n";
 
                 int last_seven_bits = (immediate >> 5);
                 instr.instruction |= (last_seven_bits << (7 + 5 + 3 + 5 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme2: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme2: " << debug_print << "\n";
             }
             else if (opr == "beq" || 
                      opr == "bne" ||  
@@ -428,36 +428,36 @@ void Assembler::write_into_instr_mem()
                 int bit_12 = immediate & 1;
 
                 instr.instruction |= opcode;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
 
                 instr.instruction |= bit_11 << 7;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme1: " << debug_print << "\n";
 
                 instr.instruction |= bit_1_to_4 << (7 + 1);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme2: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme2: " << debug_print << "\n";
 
                 instr.instruction |= funct3 << (7 + 1 + 4);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with F3: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with F3: " << debug_print << "\n";
 
                 instr.instruction |= rs_1_index << (7 + 1 + 4 + 3);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs1: " << debug_print << "\n";
 
                 instr.instruction |= rs_2_index << (7 + 1 + 4 + 3 + 5);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rs2: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rs2: " << debug_print << "\n";
 
                 instr.instruction |= bit_5_to_10 << (7 + 1 + 4 + 3 + 5 + 5);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme3: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme3: " << debug_print << "\n";
 
                 instr.instruction |= bit_12 << (7 + 1 + 4 + 3 + 5 + 5 + 6);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme4: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme4: " << debug_print << "\n";
             }
             else if (opr == "jal")
             {
@@ -493,28 +493,28 @@ void Assembler::write_into_instr_mem()
                 int bit_20 = immediate & 1;
 
                 instr.instruction |= opcode;
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] Only opcode: " << debug_print << "\n";
 
                 instr.instruction |= (rd_index << 7);
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with rd: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with rd: " << debug_print << "\n";
 
                 instr.instruction |= (bit_12_to_19 << (7 + 5));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme1: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme1: " << debug_print << "\n";
 
                 instr.instruction |= (bit_11 << (7 + 5 + 8));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme2: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme2: " << debug_print << "\n";
 
                 instr.instruction |= (bit_1_to_10 << (7 + 5 + 8 + 1));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme3: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme3: " << debug_print << "\n";
 
                 instr.instruction |= (bit_20 << (7 + 5 + 8 + 1 + 10));
-                debug_print = instr.instruction;
-                std::cout << "[DEBUG] with imme4: " << debug_print << "\n";
+                // debug_print = instr.instruction;
+                // std::cout << "[DEBUG] with imme4: " << debug_print << "\n";
             }
 
             instr.addr = addr;

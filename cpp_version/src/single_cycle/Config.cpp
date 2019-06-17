@@ -1,29 +1,32 @@
 #include "Config.h"
 
-Config::Config(const string &fname)
+Config::Config(const std::string &fname)
 {
-	parse(fname);
+    parse(fname);
 }
 
-void Config::parse(const string &fname)
+void Config::parse(const std::string &fname)
 {
-	ifstream file(fname);
-	assert(file.good());
+    std::ifstream file(fname);
+    assert(file.good());
 
-	string line;
-	while(getline(file, line))
-	{
+    std::string line;
+    while(getline(file, line))
+    {
         char delim[] = " \t=";
-        vector<string> tokens;
+        std::vector<std::string> tokens;
 
-        while (true) 
+        while (true)
         {
             size_t start = line.find_first_not_of(delim);
-            if (start == string::npos) 
+            if (start == std::string::npos)
+            {
                 break;
+            }
 
             size_t end = line.find_first_of(delim, start);
-            if (end == string::npos) {
+            if (end == std::string::npos)
+            {
                 tokens.push_back(line.substr(start));
                 break;
             }
@@ -34,28 +37,32 @@ void Config::parse(const string &fname)
 
         // empty line
         if (!tokens.size())
+        {
             continue;
+        }
 
         // comment line
         if (tokens[0][0] == '#')
+        {
             continue;
+        }
 
         // parameter line
         assert(tokens.size() == 2 && "Only allow two tokens in one line");
 
-        // Extract Timing Parameters
+        // Extract configurations
         if(tokens[0] == "num_of_cores")
         {
-        	num_cores = atoi(tokens[1].c_str());
-	}
-	else if(tokens[0] == "frequency")
+            num_cores = atoi(tokens[1].c_str());
+        }
+        else if(tokens[0] == "frequency")
         {
-        	frequency = atof(tokens[1].c_str());
-	}
-	else if(tokens[0] == "mc_mode")
+            frequency = atof(tokens[1].c_str());
+        }
+        else if(tokens[0] == "mc_mode")
         {
-        	mc_mode = atof(tokens[1].c_str());
-	}
+            mc_mode = atof(tokens[1].c_str());
+        }
     }
 
     file.close();
