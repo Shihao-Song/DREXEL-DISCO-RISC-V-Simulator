@@ -6,11 +6,11 @@ Course Projects Based on DREXEL-DISCO-RISC-V-Simulator:
 (1) Single-cycle RISC-V Simulation with Exploration to Multi-core System
 (2) Pipelining RISC-V Simulation with Data Forwarding
 
-To compile CPP version (Navigate into cpp_version):
+To compile:
 bash compile.bash single-cycle OR
 bash compile.bash pipeline
 
-To run CPP version (Stay in cpp_version directory):
-./RVSim ../configs/RISC_V.cfg out/out ../cpu_traces/cpu_traces_core_0
+To run:
+./RVSim configs/RISC_V.cfg out/out cpu_traces/cpu_traces_core_0
 
 For more information, please review course_projects section. We are currently developing C version, will update soon.
