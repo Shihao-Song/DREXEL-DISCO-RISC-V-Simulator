@@ -3,52 +3,54 @@
 
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <list>
+#include <string>
 
-#include "Instruction_Memory.h"
 #include "Instruction.h"
+#include "Instruction_Memory.h"
 
-using namespace std;
-
+class Instruction_Memory;
 class Core
 {
-public:
-	Core(const string &fname, ofstream *out);
+    typedef uint64_t Addr;
+    typedef uint64_t Tick;
 
-	bool tick(); // FALSE means all the instructions are exhausted
+  public:
+    Core(const std::string &fname, std::ofstream *out);
 
-	int id; // Each core has its own ID
+    bool tick(); // FALSE means all the instructions are exhausted
 
-	void printInstrs()
-	{
-		cout << "Core " << id << " : " << endl;
+    int id; // Each core has its own ID
 
-		instr_mem->printInstr();
-	}
+    // For debugging
+    void printInstrs()
+    {
+        std::cout << "Core " << id << " : \n";
 
-private:
+        instr_mem->printInstr();
+    }
 
-	ofstream *out; // Output file
+  private:
+    std::ofstream *out; // Output file
 
-	unsigned long long int clk;
+    Tick clk;
 
-	/*
-		Group One: Design Components Here, an instruction memory has already been
-		designed for you.
-	*/
-	long PC;
+    /*
+        Group One: Design Components Here, an instruction memory has already been
+        designed for you.
+    */
+    Addr PC;
 
-	Instruction_Memory *instr_mem;
+    Instruction_Memory *instr_mem;
 
-	/*
-		Group Two: Simulator Related
-	*/
-	list<Instruction> pending_queue;
+    /*
+	Group Two: Simulator Related
+    */
+    std::list<Instruction> pending_queue;
 
-	void serve_pending_instrs();
+    void serve_pending_instrs();
 
-	void printStats(list<Instruction>::iterator &ite);
+    void printStats(std::list<Instruction>::iterator &ite);
 };
 
 #endif
