@@ -2,6 +2,7 @@
 #define __SOCKET_H__
 
 #include <cmath>
+#include <memory>
 #include <vector>
 
 #include "Config.h"
@@ -14,7 +15,7 @@ class Socket
 
   public:
     // Constructor
-    Socket(const Config &configs, std::vector<Core *> &cores);
+    Socket(const Config &configs, std::ofstream *out, const char *argv[]);
 
     bool tick(); // FALSE means all the instructions are exhausted
 
@@ -32,7 +33,7 @@ class Socket
     }
 
   private:
-    std::vector<Core*> cores;
+    std::vector<std::unique_ptr<Core>> cores;
 
     Tick ref_clk; // Reference clock cycle, 1 GHz
 

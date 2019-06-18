@@ -1,12 +1,13 @@
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #include "Config.h"
 #include "Core.h"
 #include "Socket.h"
 
-void run_simulation(Socket *socket);
+void run_simulation(Socket* socket);
 
 int main(int argc, const char *argv[])
 {	
@@ -26,27 +27,16 @@ int main(int argc, const char *argv[])
 
     // Output file
     std::ofstream out(argv[2]);
-
-    // Initialize Cores
-    std::vector<Core *> cores;
-
-    for (int i = 0; i < config.get_num_cores(); i++)
-    {
-        Core *core = new Core(argv[(3 + i)], &out);
-        core->id = i;
-
-        cores.push_back(core);
-    }
-
+ 
     // Initialize Socket
-    Socket *socket = new Socket(config, cores);
+    std::unique_ptr<Socket> socket = std::make_unique<Socket>(config, &out, argv);
 
     /*
         Run Simulation
     */
     if (config.get_mc_mode() != 1)
     {
-        run_simulation(socket);
+        run_simulation(socket.get());
     }
     else
     {
@@ -59,13 +49,6 @@ int main(int argc, const char *argv[])
         Free Resource
     */
     out.close();
-
-    for (int i = 0; i < config.get_num_cores(); i++)
-    {
-        delete cores[i];
-    }
-
-    delete socket;
 }
 
 void run_simulation(Socket *socket)

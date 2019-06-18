@@ -1,13 +1,15 @@
 #include "Socket.h"
 
-Socket::Socket(const Config &configs, std::vector<Core *> &cores)
+Socket::Socket(const Config &configs, std::ofstream *out, const char *argv[])
     : ref_clk(0),
       clk(0),
-      cores(cores),
       num_cores(configs.get_num_cores()),
       frequency(configs.get_freq())
 {
-
+    for (int i = 0; i < configs.get_num_cores(); i++)
+    {
+        cores.push_back(std::make_unique<Core>(argv[(3 + i)], out));
+    }
 }
 
 bool Socket::tick()
