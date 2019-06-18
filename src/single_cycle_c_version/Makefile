@@ -1,12 +1,24 @@
-SOURCE	:= Main.c ../single_cycle/Config.cpp 
-CC	:= g++
-FLAGS	:= -O3 -std=c++14 -w
-TARGET	:= RVSim
+TARGET = simulator
+CC = gcc
+#LIBS = -lreadline
+CFLAGS = -g
 
-all: $(TARGET)
+.PHONY: default all clean
 
-$(TARGET): $(SOURCE)
-	$(CC) $(FLAGS) -o $(TARGET) $(SOURCE)
+default: $(TARGET)
+all: default
+
+OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
+HEADERS = $(wildcard *.h)
+
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PRECIOUS: $(TARGET) $(OBJECTS)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
 
 clean:
-	rm $(TARGET)
+	-rm -f *.o
+	-rm -f $(TARGET)
