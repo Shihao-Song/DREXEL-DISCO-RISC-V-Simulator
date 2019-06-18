@@ -3,6 +3,7 @@
 
 #include <bitset>
 #include <map>
+#include <memory>
 #include <vector>
 
 #include "Instruction.h"

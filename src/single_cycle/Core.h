@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <memory>
 #include <string>
 
 #include "Instruction.h"
@@ -41,7 +42,7 @@ class Core
     */
     Addr PC;
 
-    Instruction_Memory *instr_mem;
+    std::unique_ptr<Instruction_Memory> instr_mem;
 
     /*
 	Group Two: Simulator Related

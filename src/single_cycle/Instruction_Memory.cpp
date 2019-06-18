@@ -3,11 +3,9 @@
 
 Instruction_Memory::Instruction_Memory(const std::string fname)
 {
-    Assembler *assm = new Assembler(this, fname);
+    std::unique_ptr<Assembler> assm = std::make_unique<Assembler>(this, fname);
 
     assm->write_into_instr_mem();
-
-    free(assm);
 }
 
 Instruction& Instruction_Memory::get_instruction(Addr addr)
