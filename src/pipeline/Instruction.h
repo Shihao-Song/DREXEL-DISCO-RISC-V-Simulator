@@ -4,25 +4,26 @@
 #include <vector>
 #include <string>
 
-using namespace std;
+typedef uint64_t Addr;
+typedef uint64_t Tick;
 
 class Instruction
 {
-public:
-	long addr; // Address of the instruction
+  public:
+    Addr addr; // Address of the instruction
 
-	string raw_instr; // Raw instruction from input file
+    std::string raw_instr; // Raw instruction from input file
 
-	unsigned int instruction = 0; // Instruction read from instruction memory
+    unsigned int instruction = 0; // Instruction read from instruction memory
 
-	unsigned long long int begin_exe; // Clock which it starts to execute
+    Tick begin_exe; // Clock which it starts to execute
 
-	unsigned long long int end_exe; // Clock which it ends execution
+    Tick end_exe; // Clock which it ends execution
 
-	/*
-		Constructor
-	*/
-	Instruction(){}
+    /*
+        Constructor
+    */
+    Instruction(){}
 };
 
 #endif

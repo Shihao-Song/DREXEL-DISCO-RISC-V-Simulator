@@ -1,4 +1,5 @@
-A simple but cycle-accurate RISC-V simulator designed by Drexel DISCO Lab
+A simple but cycle-accurate RISC-V simulator designed by Drexel DISCO Lab.
+This (incomplete) simulator is for ECEC 355 course projects.
 
 P.I.s: Dr. Anup Das, Dr. Nagarajan Kandasamy
 
@@ -10,7 +11,10 @@ To compile:
 bash compile.bash single-cycle OR
 bash compile.bash pipeline
 
-To run:
+To run single-cycle:
 ./RVSim configs/RISC_V.cfg out/out cpu_traces/cpu_traces_core_0
+
+To run pipeline (only support R-type as an example for students):
+./RVSim configs/RISC_V.cfg out/out cpu_traces/pipeline_debugging_with_hazard
 
 For more information, please review course_projects section. We are currently developing C version, will update soon.

@@ -1,90 +1,75 @@
 #include "Core.h"
 
-Core::Core(const string &fname, ofstream *out) : out(out), 
-						clk(0) 
+Core::Core(const std::string &fname, std::ofstream *out) : out(out)
 {
-	/*
-	 * Initialize Stages
-	 * */
-	if_stage = (new IF_Stage(fname, this));	
-	id_stage = (new ID_Stage());
-	ex_stage = (new EX_Stage());
-	mem_stage = (new MEM_Stage());
-	wb_stage = (new WB_Stage());
+    if_stage = std::make_unique<IF_Stage>(fname, this); 
+    id_stage = std::make_unique<ID_Stage>();
+    ex_stage = std::make_unique<EX_Stage>();
+    mem_stage = std::make_unique<MEM_Stage>();
+    wb_stage = std::make_unique<WB_Stage>();
 
-	wb_stage->mem_stage = mem_stage;
-	wb_stage->id_stage = id_stage;
+    wb_stage->mem_stage = mem_stage.get();
+    wb_stage->id_stage = id_stage.get();
 
-	mem_stage->ex_stage = ex_stage;
-	
-	ex_stage->id_stage = id_stage;
-	
-	id_stage->if_stage = if_stage;
-	id_stage->ex_stage = ex_stage;
-	id_stage->mem_stage = mem_stage;
-}	
+    mem_stage->ex_stage = ex_stage.get();
 
+    ex_stage->id_stage = id_stage.get();
+
+    id_stage->if_stage = if_stage.get();
+    id_stage->ex_stage = ex_stage.get();
+    id_stage->mem_stage = mem_stage.get();
+}
+
+/*
+FIXME - Add more functions and modify tick() to simulate single-cycle RISC-V architecture
+*/
 bool Core::tick()
 {
-	/*
-		Step One: Serving pending instructions
-	*/
-	if (pending_queue.size() > 0)
-	{
-		serve_pending_instrs();
-	}
-	
-	/*
-		Step Two: Where simulation happens
-	*/
-	if (DEBUG)
-	{
-		cout << "clk: " << clk << " : ";
-	}
+    if (pending_queue.size() > 0)
+    {
+        servePendingInstrs();
+    }
 
-	wb_stage->tick();
-	mem_stage->tick();
-	ex_stage->tick();
-	id_stage->tick();	
-	if_stage->tick();
-	
-	if (DEBUG)
-	{
-		cout << endl;
-	}
+    if (DEBUG)
+    {
+        std::cout << "clk: " << clk << " : ";
+    }
 
-	clk++;
+    wb_stage->tick();
+    mem_stage->tick();
+    ex_stage->tick();
+    id_stage->tick();
+    if_stage->tick();
 
-	/*
-		Step Four: Should we shut down simulator
-	*/
-	if (pending_queue.size() == 0)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+    if (DEBUG)
+    {
+        std::cout << "\n";
+    }
+
+    clk++;
+    if (pending_queue.size() == 0)
+    {
+        return false;
+    }
+    return true;
 }
 
-void Core::serve_pending_instrs()
+void Core::servePendingInstrs()
 {
-	list<Instruction>::iterator instr = pending_queue.begin();
+    std::list<Instruction>::iterator instr = pending_queue.begin();
 
-	if (instr->end_exe <= clk)
-	{
-		printStats(instr);
-		
-		pending_queue.erase(instr);	
-	}
+    if (instr->end_exe <= clk)
+    {
+        printStats(instr);
+
+        pending_queue.erase(instr);
+    }
 }
 
-void Core::printStats(list<Instruction>::iterator &ite)
+void Core::printStats(std::list<Instruction>::iterator &ite)
 {
-	*out << ite->raw_instr << " => ";
-	*out << "Core ID: " << id << "; ";
-	*out << "Begin Exe: " << ite->begin_exe << "; ";
-	*out << "End Exe: " << ite->end_exe << endl;
+    *out << ite->raw_instr << " => ";
+    *out << "Core ID: " << id << "; ";
+    *out << "Begin Exe: " << ite->begin_exe << "; ";
+    *out << "End Exe: " << ite->end_exe << "\n";
 }
-

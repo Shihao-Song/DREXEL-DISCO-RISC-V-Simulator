@@ -3,57 +3,51 @@
 
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <list>
+#include <memory>
+#include <string>
 
 #include "Instruction.h"
+#include "Instruction_Memory.h"
+
 #include "Stages.h"
-
-#define DEBUG 1
-
-using namespace std;
-
-class IF_Stage;
-class ID_Stage;
-class EX_Stage;
-class MEM_Stage;
-class WB_Stage;
 
 class Core
 {
-public:
-	Core(const string &fname, ofstream *out);
+    typedef uint64_t Addr;
+    typedef uint64_t Tick;
 
-	bool tick(); // FALSE means all the instructions are exhausted
+  public:
+    Core(const std::string &fname, std::ofstream *out);
 
-	int id; // Each core has its own ID
+    bool tick(); // FALSE means all the instructions are exhausted
 
-	friend class IF_Stage;
+    int id; // Each core has its own ID
 
-private:
-	
-	ofstream *out; // Output file
+    // For debugging
+    void printInstrs()
+    {
+        std::cout << "Core " << id << " : \n";
+        // Unsupported for Pipeline
+    }
 
-	unsigned long long int clk;
+    // Stages
+    std::unique_ptr<IF_Stage> if_stage;
+    std::unique_ptr<ID_Stage> id_stage;
+    std::unique_ptr<EX_Stage> ex_stage;
+    std::unique_ptr<MEM_Stage> mem_stage;
+    std::unique_ptr<WB_Stage> wb_stage;
 
-	/*
-		Group One: Add Stages here.
-	*/
-	IF_Stage *if_stage;	
-	ID_Stage *id_stage;
-	EX_Stage *ex_stage;
-	MEM_Stage *mem_stage;
-	WB_Stage *wb_stage;
+    /*
+     * Simulator related
+     * */
+    Tick clk;
 
-	/*
-		Group Two: Simulator Related
-	*/
-	// For demonstration only, you should use your linked list data structure.
-	list<Instruction> pending_queue;
+    std::list<Instruction> pending_queue;
+    void servePendingInstrs();
 
-	void serve_pending_instrs();
-
-	void printStats(list<Instruction>::iterator &ite);
+    std::ofstream *out; // Output file
+    void printStats(std::list<Instruction>::iterator &ite);
 };
 
 #endif
